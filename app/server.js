@@ -1,6 +1,8 @@
 const http = require("http");
+const cors = require("cors");
+const Error = require("http-errors");
 const morgan = require("morgan");
-const { AllRoutes } = require("../router/index.router");
+const { AllRoutes } = require("./router/index.router");
 const { default: mongoose } = require("mongoose");
 const path = require("path");
 
@@ -15,6 +17,7 @@ class Application {
     this.errorHandling();
   }
   configApplication() {
+    this.#app.use(cors());
     this.#app.use(morgan("dev"));
     this.#app.use(this.#express.json());
     this.#app.use(this.#express.urlencoded({ extended: true }));
@@ -49,18 +52,20 @@ class Application {
     this.#app.use(AllRoutes);
   }
   errorHandling() {
+    this.#app.use((req, res, next) => {
+      next(Error.NotFound("not found page!"));
+    });
     this.#app.use((err, req, res, next) => {
-      const status = err.status ?? err.statusCode ?? 500;
-      const message = err.message ?? err.msg ?? "InternalServerError";
+      const serverError = Error.InternalServerError();
+      const status =
+        err.status ??
+        err.statusCode ??
+        serverError.status ??
+        serverError.statusCode;
+      const message = err.message ?? err.msg ?? serverError.message;
       return res.status(status).json({
         status,
         message,
-      });
-    });
-    this.#app.use((req, res, next) => {
-      return res.status(404).json({
-        status: 404,
-        message: "not found page",
       });
     });
   }

@@ -2,7 +2,11 @@ const Controller = require("../controller");
 
 class HomeController extends Controller {
   indexPage(req, res, next) {
-    res.status(200).send("hello");
+    try {
+      return res.status(200).send("hello");
+    } catch (error) {
+      next(error);
+    }
   }
 }
 
