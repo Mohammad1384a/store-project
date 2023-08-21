@@ -14,7 +14,6 @@ function isUserLoggedIn(req, res, next) {
         throw createError.Unauthorized(err?.message ?? err);
       }
       const { payload: phone } = payload;
-      console.log(payload);
       const user = await userModel.findOne({ phone }, { password: 0, otp: 0 });
       if (!user) {
         throw createError.Unauthorized("not found user");
@@ -23,7 +22,7 @@ function isUserLoggedIn(req, res, next) {
       return next();
     });
   } catch (error) {
-    next(error);
+    next(createError.InternalServerError(error.message ?? error));
   }
 }
 

@@ -1,8 +1,11 @@
 const Controller = require("../controller");
-const { randomNumber, generateToken } = require("../../../utils/functions");
+const {
+  randomNumber,
+  generateToken,
+  generateRefreshToken,
+} = require("../../../utils/functions");
 const { userModel } = require("../../../models/user.model");
 const createError = require("http-errors");
-
 class AuthController extends Controller {
   async getOTP(req, res, next) {
     try {
@@ -11,11 +14,15 @@ class AuthController extends Controller {
       const code = randomNumber().toString();
       const otp = {
         code,
-        expiresIn: new Date().getTime() + 120000,
+        expiresIn: new Date().getTime() + 1200000,
       };
+      const token = await generateToken(phone);
       if (!user) {
-        const token = await generateToken(phone);
-        const createUser = await userModel.create({ phone, otp, token });
+        const createUser = await userModel.create({
+          phone,
+          otp,
+          token,
+        });
         if (!createUser)
           throw createError.InternalServerError("creating User failed");
         return res.status(200).json({
@@ -25,7 +32,7 @@ class AuthController extends Controller {
       }
       const updateUser = await userModel.updateOne(
         { phone: phone },
-        { $set: { otp } }
+        { $set: { otp, token } }
       );
       if (!updateUser.modifiedCount)
         throw createError.InternalServerError("sending otp failed");
@@ -49,12 +56,39 @@ class AuthController extends Controller {
       if (user.otp.expiresIn < now) {
         throw createError.Unauthorized("session expired");
       }
+      const userId = user._id.toString();
+      const refreshToken = await generateRefreshToken(phone, userId);
       return res.status(200).json({
         status: 200,
         user,
+        refreshToken,
       });
     } catch (error) {
-      next(createError.BadRequest(error));
+      next(createError.BadRequest(error?.message ?? error));
+    }
+  }
+
+  async refreshToken(req, res, next) {
+    try {
+      const { phone } = req.body;
+      const user = await userModel.findOne({ phone });
+      if (!user) {
+        throw createError.BadRequest("not found user");
+      }
+      const userId = user._id.toString();
+      const newToken = await generateRefreshToken(phone, userId);
+      if (!newToken) {
+        throw createError.InternalServerError(
+          "generating refresh token failed"
+        );
+      }
+      return res.status(200).json({
+        status: 200,
+        refreshToken: newToken,
+        user,
+      });
+    } catch (error) {
+      next(createError.InternalServerError(error?.message ?? error));
     }
   }
 

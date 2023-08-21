@@ -1,4 +1,5 @@
 const { validationResult } = require("express-validator");
+const createError = require("http-errors");
 
 function validationMapper(req, res, next) {
   let messages = {};
@@ -7,12 +8,13 @@ function validationMapper(req, res, next) {
     result.errors.forEach((e) => {
       messages[e.path] = e.msg ?? e.value;
     });
+    createError.InternalServerError(messages);
     return res.status(400).json({
       status: 400,
       messages,
     });
   }
-  next();
+  return next();
 }
 
 module.exports = {

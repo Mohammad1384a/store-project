@@ -3,6 +3,7 @@ const cors = require("cors");
 const Error = require("http-errors");
 const morgan = require("morgan");
 const { AllRoutes } = require("./router/index.router");
+const redis = require("./utils/redis");
 const { default: mongoose } = require("mongoose");
 const path = require("path");
 
@@ -45,6 +46,9 @@ class Application {
     // });
     process.on("SIGINT", async () => {
       await mongoose.connection.close();
+      redis.quit(() => {
+        console.log("redis closed");
+      });
       process.exit(0);
     });
   }

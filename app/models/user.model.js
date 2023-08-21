@@ -18,6 +18,7 @@ const Schema = mongoose.Schema({
   discount: { type: Number, default: 0 },
   birthday: { type: String },
   token: { type: String, default: "" },
+  refreshToken: { type: String, default: "" },
   roles: { type: [], default: ["USER"] },
 });
 
