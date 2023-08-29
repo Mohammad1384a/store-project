@@ -1,4 +1,5 @@
 const jwt = require("jsonwebtoken");
+const bcrypt = require("bcrypt");
 const createError = require("http-errors");
 const redis = require("./redis");
 
@@ -51,8 +52,15 @@ async function getRedis(id) {
   return result;
 }
 
+function hashPassword(pass) {
+  const salt = bcrypt.genSaltSync(10);
+  const hash = bcrypt.hashSync(pass, salt);
+  return hash.toString();
+}
+
 module.exports = {
   generateRefreshToken,
+  hashPassword,
   randomNumber,
   generateToken,
   getRedis,
