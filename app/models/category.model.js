@@ -1,9 +1,12 @@
 const { default: mongoose } = require("mongoose");
 
-const Schema = mongoose.Schema({});
+const Schema = mongoose.Schema({
+  title: { type: String, required: true },
+  parent: { type: mongoose.Types.ObjectId, default: undefined },
+});
 
-const model = mongoose.model("blog", Schema);
+const model = mongoose.model("category", Schema);
 
 module.exports = {
-  blogModel: model,
+  categoryModel: model,
 };

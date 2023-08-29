@@ -64,7 +64,7 @@ class AuthController extends Controller {
         refreshToken,
       });
     } catch (error) {
-      next(createError.BadRequest(error?.message ?? error));
+      next(createError.InternalServerError(error?.message ?? error));
     }
   }
 
