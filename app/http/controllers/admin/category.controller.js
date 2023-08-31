@@ -92,13 +92,24 @@ class CategoryController extends Controller {
   }
   async getParents(req, res, next) {
     try {
-      const parents = await categoryModel.find(
-        { parent: undefined },
-        { _id: 0, __v: 0 }
-      );
-      if (parents.length === 0) {
-        throw createError.BadRequest("no parents found");
-      }
+      const parents = await categoryModel.aggregate([
+        {
+          $match: {
+            parent: {
+              $exists: false,
+            },
+          },
+        },
+        {
+          $lookup: {
+            from: "categories",
+            localField: "_id",
+            foreignField: "parent",
+            as: "children",
+          },
+        },
+        { $project: { __v: 0, "children.parent": 0, "children.__v": 0 } },
+      ]);
       return res.status(200).json({
         status: 200,
         parents,
