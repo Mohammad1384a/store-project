@@ -21,6 +21,7 @@ class AuthController extends Controller {
         const createUser = await userModel.create({
           phone,
           otp,
+          username: code,
           token,
         });
         if (!createUser)

@@ -5,7 +5,6 @@ const { randomNumber } = require("../utils/functions");
 
 router.get("/random-number", (req, res, next) => {
   const number = randomNumber();
-  console.log(number);
   if (!number) {
     return res.status(500).json({
       status: 500,
