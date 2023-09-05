@@ -2,33 +2,29 @@ const { Router } = require("express");
 const router = Router();
 const BlogController = require("../../http/controllers/admin/blog.controller");
 const { uploadFile } = require("../../http/middlewares/multer");
-const { isUserLoggedIn } = require("../../http/middlewares/isUserLoggedIn");
+const { isUserAdmin } = require("../../http/middlewares/isUserAdmin");
 const {
   blogValidator,
   validateId,
+  updateBlogValidator,
 } = require("../../http/validators/admin/blog.validator");
 const { validationMapper } = require("../../http/validators/validationMapper");
 
 router.post(
   "/add",
   blogValidator(),
-  isUserLoggedIn,
+  isUserAdmin,
   validationMapper,
   uploadFile.single("image"),
   BlogController.addBlog
 );
 
-router.get(
-  "/all",
-  isUserLoggedIn,
-  validationMapper,
-  BlogController.getBlogList
-);
+router.get("/all", isUserAdmin, validationMapper, BlogController.getBlogList);
 
 router.get(
   "/:id",
   validateId(),
-  isUserLoggedIn,
+  isUserAdmin,
   validationMapper,
   BlogController.getBlogById
 );
@@ -36,9 +32,26 @@ router.get(
 router.delete(
   "/remove/:id",
   validateId(),
-  isUserLoggedIn,
+  isUserAdmin,
   validationMapper,
   BlogController.removeBlog
+);
+
+router.put(
+  "/edit/:id",
+  validateId(),
+  updateBlogValidator(),
+  isUserAdmin,
+  validationMapper,
+  BlogController.editBlog
+);
+
+router.get(
+  "/comments/:id",
+  validateId(),
+  isUserAdmin,
+  validationMapper,
+  BlogController.getBlogComments
 );
 
 module.exports = {

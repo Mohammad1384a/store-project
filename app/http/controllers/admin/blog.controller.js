@@ -77,7 +77,6 @@ class BlogController extends Controller {
           },
         },
       ]);
-      console.log(blogs);
       return res.status(200).json({
         status: 200,
         blogs,
@@ -118,12 +117,46 @@ class BlogController extends Controller {
   }
   async editBlog(req, res, next) {
     try {
+      const { id } = req.params;
+      let data = req.body;
+      const validEntries = [
+        "categories",
+        "title",
+        "brief_text",
+        "image",
+        "tags",
+      ];
+      Object.keys(data).forEach((key) => {
+        if (!validEntries.includes(key)) {
+          delete data[key];
+        }
+      });
+      const update = await blogModel.updateOne({ _id: id }, { $set: data });
+      if (update.modifiedCount === 0) {
+        throw createError.InternalServerError("updating Blog failed");
+      }
+      return res.status(200).json({
+        status: 200,
+        update,
+      });
     } catch (error) {
       next(createError.InternalServerError(error?.message ?? error));
     }
   }
   async getBlogComments(req, res, next) {
     try {
+      const { id } = req.params;
+      const blog = await blogModel.findById(id);
+      if (!blog) {
+        throw createError.NotFound("not found blog");
+      }
+      if (blog.comments.length === 0) {
+        throw createError.NotFound("blog has no comments");
+      }
+      return res.status(200).json({
+        status: 200,
+        comments: blog.comments,
+      });
     } catch (error) {
       next(createError.InternalServerError(error?.message ?? error));
     }
