@@ -5,6 +5,9 @@ const { userModel } = require("../../models/user.model");
 function isUserAdmin(req, res, next) {
   try {
     const headers = req.headers;
+    if (!headers.authorization || !headers?.authorization.length > 0) {
+      throw createError.Unauthorized("please login first");
+    }
     const [bearer, token] = headers.authorization?.split(" ");
     if (!token || !bearer || bearer.toLowerCase() !== "bearer") {
       throw res.status(401).json({

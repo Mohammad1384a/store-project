@@ -3,14 +3,14 @@ const createError = require("http-errors");
 const path = require("path");
 const fs = require("fs");
 
-function createRoute() {
+function createRoute(field) {
   const date = new Date();
   const year = date.getFullYear().toString();
   const month = date.getMonth().toString();
   const day = date.getDate().toString();
   const directory = path.join(
     __dirname,
-    "../../../public/uploads/blogs",
+    `../../../public/uploads/${field}`,
     year,
     month,
     day
@@ -21,7 +21,13 @@ function createRoute() {
 
 const storage = multer.diskStorage({
   destination: (req, file, cb) => {
-    const filePath = createRoute();
+    const type = file.fieldname;
+    const filePath =
+      type === "image"
+        ? createRoute("blog")
+        : type === "images"
+        ? createRoute("product")
+        : undefined;
     req.fileName = file;
     cb(null, filePath);
   },
@@ -35,8 +41,11 @@ const storage = multer.diskStorage({
     cb(null, fileName);
   },
 });
-const maxSize = 0.5 * 1000 * 1000;
-const uploadFile = multer({ storage: storage, limits: { fileSize: maxSize } });
+const maxSize = 5 * 1000 * 1000;
+const uploadFile = multer({
+  storage: storage,
+  limits: { fileSize: maxSize, fieldSize: maxSize * 5 },
+});
 module.exports = {
   uploadFile,
 };

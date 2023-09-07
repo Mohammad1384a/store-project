@@ -14,9 +14,6 @@ function productValidator() {
       .isString()
       .isLength({ min: 50, max: 80 })
       .withMessage("you should introduce your product with 50-80 characters"),
-    body("images")
-      .isArray({ min: 1, max: 5 })
-      .withMessage("you should choose 1-5 images for your product"),
     body("tags")
       .optional()
       .isArray({ min: 1, max: 5 })

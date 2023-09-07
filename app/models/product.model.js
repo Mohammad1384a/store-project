@@ -25,10 +25,10 @@ const Schema = new mongoose.Schema({
   features: {
     type: Object,
     default: {
-      length: "",
-      height: "",
-      width: "",
-      weight: "",
+      length: 0,
+      height: 0,
+      width: 0,
+      weight: 0,
       colors: [],
       model: [],
       made_in: "",

@@ -5,14 +5,7 @@ const createError = require("http-errors");
 class BlogController extends Controller {
   async addBlog(req, res, next) {
     try {
-      // const { title, author, brief_text, categories } = req.body;
-      const title = "hello I'm some title3";
-      const author = "64f455b49128e3b0142a4709";
-      const brief_text = "hello I'm some brief text3";
-      const categories = [
-        "64edf1d70e0331caf6f6d484",
-        "64edf1c30e0331caf6f6d482",
-      ];
+      const { title, author, brief_text, categories } = req.body;
       const address = req.file.path.indexOf("uploads");
       const imageAddress =
         req.protocol +
