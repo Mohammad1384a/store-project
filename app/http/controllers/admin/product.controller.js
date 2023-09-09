@@ -6,7 +6,7 @@ class ProductController extends Controller {
   async addProduct(req, res, next) {
     try {
       const data = req.body;
-      if (req.files === 0 || !req.file) {
+      if (req.files.length === 0 || !req.file) {
         throw createError.BadRequest(
           "you must choose 2-5 images for your product"
         );
@@ -57,7 +57,11 @@ class ProductController extends Controller {
   }
   async getProductList(req, res, next) {
     try {
-      const products = await productModel.find({}, { __v: 0, _id: 0 });
+      const query = req.query.search;
+      const products = await productModel.find(
+        query ? { $text: { $search: query } } : {},
+        { __v: 0, _id: 0 }
+      );
       if (products.length === 0) {
         throw createError.NotFound("no products found");
       }
@@ -71,26 +75,90 @@ class ProductController extends Controller {
   }
   async getProductById(req, res, next) {
     try {
-      return res.send("hello");
+      const { id } = req.params;
+      const product = await productModel.findById(id);
+      if (!product) {
+        throw createError.NotFound("no such a product found");
+      }
+      return res.status(200).json({
+        status: 200,
+        product,
+      });
     } catch (error) {
       next(createError.InternalServerError(error?.message ?? error));
     }
   }
   async editProduct(req, res, next) {
     try {
-      return res.send("hello");
+      const { id } = req.params;
+      const product = await productModel.findById(id);
+      if (!product) {
+        throw createError.NotFound("no such a project found");
+      }
+      const protocol = req.protocol;
+      const host = req.get("host");
+      const imagesAddress =
+        req.files.length > 0
+          ? req?.files.map((file) => {
+              return (
+                protocol +
+                "://" +
+                host +
+                "/" +
+                file?.path?.substring(file.path.indexOf("uploads"))
+              );
+            })
+          : null;
+      let data = req.body;
+      data.images = imagesAddress ?? product.images;
+      const validItems = [
+        "title",
+        "brief_text",
+        "body",
+        "images",
+        "categories",
+        "price",
+        "type",
+        "teacher",
+        "features",
+        "quentity",
+        "discount",
+        "tags",
+        "comments",
+      ];
+      Object.keys(data).forEach((key) => {
+        if (!validItems.includes(key)) {
+          throw createError.BadRequest("invalid key sent");
+        }
+      });
+      const update = await productModel.updateOne({ _id: id }, { $set: data });
+      if (update.modifiedCount === 0) {
+        throw createError.InternalServerError("updating product failed");
+      }
+      return res.status(200).json({
+        status: 200,
+        update,
+      });
     } catch (error) {
       next(createError.InternalServerError(error?.message ?? error));
     }
   }
   async removeProduct(req, res, next) {
     try {
-      return res.send("hello");
+      const { id } = req.params;
+      const remove = await productModel.deleteOne({ _id: id });
+      if (remove.deletedCount === 0) {
+        throw createError.InternalServerError("deleting product failed");
+      }
+      return res.status(200).json({
+        status: 200,
+        remove,
+      });
     } catch (error) {
       next(createError.InternalServerError(error?.message ?? error));
     }
   }
-  async getOwnersProducts(req, res, next) {
+  async getProductsOfOwner(req, res, next) {
     try {
       return res.send("hello");
     } catch (error) {
