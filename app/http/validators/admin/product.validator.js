@@ -1,4 +1,5 @@
 const { body, param } = require("express-validator");
+const createError = require("http-errors");
 
 function productValidator() {
   return [
@@ -33,9 +34,13 @@ function productValidator() {
       .optional()
       .isDecimal()
       .withMessage("quantity should be a number"),
-    body("type")
-      .equals("physical" || "virtual")
-      .withMessage("type should be physical or virtual"),
+    body("type").custom((value) => {
+      if (value === "physical" || value === "virtual") {
+        return value;
+      } else {
+        throw new Error("type must physical or virtual");
+      }
+    }),
     body("features")
       .optional()
       .isObject()
@@ -92,7 +97,13 @@ function updateProductValidator() {
 }
 
 function validateId() {
-  return [param("id").isMongoId().withMessage("please enter a valid mongoId")];
+  return [
+    param("id").isMongoId().withMessage("please enter a valid mongoId"),
+    param("courseId")
+      .optional()
+      .isMongoId()
+      .withMessage("please enter a valid courseid"),
+  ];
 }
 
 module.exports = {

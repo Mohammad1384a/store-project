@@ -158,13 +158,6 @@ class ProductController extends Controller {
       next(createError.InternalServerError(error?.message ?? error));
     }
   }
-  async getProductsOfOwner(req, res, next) {
-    try {
-      return res.send("hello");
-    } catch (error) {
-      next(createError.InternalServerError(error?.message ?? error));
-    }
-  }
 }
 
 module.exports = new ProductController();

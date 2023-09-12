@@ -42,14 +42,6 @@ router.delete(
   ProductController.removeProduct
 );
 
-router.get(
-  "/owner/:id",
-  validateId(),
-  isUserAdmin,
-  validationMapper,
-  ProductController.getProductsOfOwner
-);
-
 router.put(
   "/edit/:id",
   validateId(),
