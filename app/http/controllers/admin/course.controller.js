@@ -106,7 +106,15 @@ class CourseController extends Controller {
   }
   async removeCourse(req, res, next) {
     try {
-      return res.send("hello");
+      const { id: _id } = req.params;
+      const remove = await courseModel.deleteOne({ _id });
+      if (remove.deletedCount === 0) {
+        throw createError.InternalServerError("deleting course failed");
+      }
+      return res.status(200).json({
+        status: 200,
+        remove,
+      });
     } catch (error) {
       next(createError.InternalServerError(error.message ?? error));
     }

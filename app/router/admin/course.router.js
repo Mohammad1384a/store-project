@@ -36,6 +36,14 @@ router.get(
   CourseController.getCourseById
 );
 
+router.delete(
+  "/remove/:id",
+  // isUserAdmin,
+  validateId(),
+  validationMapper,
+  CourseController.removeCourse
+);
+
 module.exports = {
   courseRouter: router,
 };
