@@ -26,11 +26,19 @@ router.get(
 );
 
 router.delete(
-  "/remove/:courseId/:id",
+  "/remove/:id",
   isUserAdmin,
   validateId(),
   validationMapper,
   ChapterController.removeChapter
+);
+
+router.put(
+  "/edit/:id",
+  isUserAdmin,
+  validateId(),
+  validationMapper,
+  ChapterController.editChapter
 );
 
 module.exports = {

@@ -43,9 +43,9 @@ class ChapterController extends Controller {
   }
   async removeChapter(req, res, next) {
     try {
-      const { courseId, id: chapterId } = req.params;
+      const { id: chapterId } = req.params;
       const remove = await courseModel.updateOne(
-        { _id: courseId },
+        { "chapters._id": chapterId },
         { $pull: { chapters: { _id: new ObjectId(chapterId) } } }
       );
       if (remove.modifiedCount === 0) {
@@ -54,6 +54,39 @@ class ChapterController extends Controller {
       return res.status(200).json({
         status: 200,
         remove,
+      });
+    } catch (error) {
+      next(createError.InternalServerError(error.message ?? error));
+    }
+  }
+  async editChapter(req, res, next) {
+    try {
+      const { id: chapterId } = req.params;
+      const data = req.body;
+      if (Object.keys(data).length === 0) {
+        throw createError.BadRequest("invalid data sent");
+      }
+      const validItems = ["title", "body"];
+      Object.keys(data).forEach((key) => {
+        if (!validItems.includes(key)) {
+          throw createError.BadRequest("invalid item send");
+        }
+        if (!data[key] || data[key].length === 0) {
+          throw createError.BadRequest("invalid value sent");
+        }
+        data[key].trim();
+      });
+      const update = await courseModel.updateOne(
+        { "chapters._id": chapterId },
+        data.title && data.body
+          ? { $set: { "chapters.$": data } }
+          : data.title && !data.body
+          ? { $set: { "chapters.$.title": data.title } }
+          : { $set: { "chapters.$.body": data.body } }
+      );
+      return res.status(200).json({
+        status: 200,
+        update,
       });
     } catch (error) {
       next(createError.InternalServerError(error.message ?? error));
