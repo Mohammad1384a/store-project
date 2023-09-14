@@ -7,6 +7,9 @@ const {
   chapterValidator,
 } = require("../../http/validators/admin/chapter.validator");
 const { validateId } = require("../../http/validators/admin/product.validator");
+const { episodeRouter } = require("./episode.router");
+
+router.use("/episode", episodeRouter);
 
 router.post(
   "/add/:id",

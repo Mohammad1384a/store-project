@@ -4,8 +4,9 @@ const { CommentSchema } = require("./public.model");
 const Expisodes = new mongoose.Schema({
   title: { type: String, required: true },
   body: { type: String, required: true },
-  value: { type: String, default: "free" },
+  value: { type: String, default: "unlocked" }, // locked,unlocked
   time: { type: String, required: true },
+  videoPath: { type: String, required: true },
 });
 
 const Chapter = new mongoose.Schema({

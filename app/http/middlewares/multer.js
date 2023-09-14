@@ -24,16 +24,20 @@ const storage = multer.diskStorage({
     const type = file.fieldname;
     const filePath =
       type === "image"
-        ? createRoute("blog")
+        ? createRoute("blogs")
         : type === "images"
-        ? createRoute("product")
-        : undefined;
+        ? createRoute("products")
+        : createRoute("videos");
     req.fileName = file;
     cb(null, filePath);
   },
   filename: (req, file, cb) => {
     const ext = path.extname(file.originalname);
-    const validTypes = [".jpeg", ".jpg", ".png"];
+    const type = file.fieldname;
+    const validTypes =
+      type === "image" || type === "images"
+        ? [".jpeg", ".jpg", ".png"]
+        : [".mp4", ".mkv", ".mov", "mpg", "mpeg"];
     if (!validTypes.includes(ext)) {
       cb(createError.BadRequest("invalid file type"), null);
     }
@@ -41,11 +45,20 @@ const storage = multer.diskStorage({
     cb(null, fileName);
   },
 });
-const maxSize = 5 * 1000 * 1000;
+
+const maxSize = 25 * 1000 * 1000;
+const videoSize = 300 * 1000 * 1000;
+
 const uploadFile = multer({
   storage: storage,
-  limits: { fileSize: maxSize, fieldSize: maxSize * 5 },
+  limits: { fileSize: maxSize, fieldSize: maxSize },
 });
+const uploadVideo = multer({
+  storage: storage,
+  limits: { fileSize: videoSize, fieldSize: videoSize },
+});
+
 module.exports = {
   uploadFile,
+  uploadVideo,
 };

@@ -39,9 +39,9 @@ router.delete(
 
 router.put(
   "/edit/:id",
+  isUserAdmin,
   validateId(),
   updateBlogValidator(),
-  isUserAdmin,
   validationMapper,
   BlogController.editBlog
 );
