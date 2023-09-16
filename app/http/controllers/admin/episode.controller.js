@@ -1,4 +1,5 @@
 const Controller = require("../controller");
+const { ObjectId } = require("mongodb");
 const { courseModel } = require("../../../models/course.model");
 const createError = require("http-errors");
 const { getVideoDurationInSeconds } = require("get-video-duration");
@@ -52,6 +53,31 @@ class EpisodeController extends Controller {
         staus: 200,
         episode,
       });
+    } catch (error) {
+      next(createError.InternalServerError(error.message ?? error));
+    }
+  }
+  async removeEpisode(req, res, next) {
+    try {
+      const { id: episodeId } = req.params;
+      const remove = await courseModel.updateOne(
+        { "chapters.episodes._id": episodeId },
+        { $pull: { "chapters.$.episodes": { _id: new ObjectId(episodeId) } } }
+      );
+      if (remove.modifiedCount === 0) {
+        throw createError.InternalServerError("removing episode failed");
+      }
+      return res.status(200).json({
+        status: 200,
+        remove,
+      });
+    } catch (error) {
+      next(createError.InternalServerError(error.message ?? error));
+    }
+  }
+  async editEpisode(req, res, next) {
+    try {
+      return res.send("hello");
     } catch (error) {
       next(createError.InternalServerError(error.message ?? error));
     }

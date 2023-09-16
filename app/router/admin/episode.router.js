@@ -11,12 +11,20 @@ const { validateId } = require("../../http/validators/admin/product.validator");
 
 router.post(
   "/add/:id",
-  //   isUserAdmin,
+  isUserAdmin,
   validateId(),
-  //   episodeValidator(),
+  episodeValidator(),
   validationMapper,
   uploadVideo.single("video"),
   EpisodeController.addEpisode
+);
+
+router.delete(
+  "/remove/:id",
+  isUserAdmin,
+  validateId(),
+  validationMapper,
+  EpisodeController.removeEpisode
 );
 
 module.exports = {
