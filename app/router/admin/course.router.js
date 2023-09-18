@@ -38,7 +38,7 @@ router.get(
 
 router.delete(
   "/remove/:id",
-  // isUserAdmin,
+  isUserAdmin,
   validateId(),
   validationMapper,
   CourseController.removeCourse

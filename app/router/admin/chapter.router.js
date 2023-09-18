@@ -11,7 +11,7 @@ const { episodeRouter } = require("./episode.router");
 
 router.use("/episode", episodeRouter);
 
-router.post(
+router.put(
   "/add/:id",
   isUserAdmin,
   chapterValidator(),

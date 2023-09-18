@@ -6,11 +6,12 @@ const { ObjectId } = require("mongodb");
 class ChapterController extends Controller {
   async addChapter(req, res, next) {
     try {
-      const { chapters } = req.body;
+      const data = req.body;
       const { id } = req.params;
+      console.log(data, req.body);
       const chapter = await courseModel.updateOne(
         { _id: id },
-        { $push: { chapters } }
+        { $push: { chapters: data } }
       );
       if (chapter.modifiedCount === 0) {
         throw createError.InternalServerError("adding chapter failed");
