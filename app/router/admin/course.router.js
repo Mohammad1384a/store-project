@@ -4,6 +4,7 @@ const CourseController = require("../../http/controllers/admin/course.controller
 const { chapterRouter } = require("./chapter.router");
 const {
   courseValidator,
+  editCourseValidator,
 } = require("../../http/validators/admin/course.validator");
 const { validationMapper } = require("../../http/validators/validationMapper");
 const { isUserAdmin } = require("../../http/middlewares/isUserAdmin");
@@ -23,14 +24,14 @@ router.post(
 
 router.get(
   "/all",
-  // isUserAdmin,
+  isUserAdmin,
   validationMapper,
   CourseController.getCourseList
 );
 
 router.get(
   "/:id",
-  // isUserAdmin,
+  isUserAdmin,
   validateId(),
   validationMapper,
   CourseController.getCourseById
@@ -42,6 +43,16 @@ router.delete(
   validateId(),
   validationMapper,
   CourseController.removeCourse
+);
+
+router.put(
+  "/edit/:id",
+  isUserAdmin,
+  validateId(),
+  editCourseValidator(),
+  validationMapper,
+  uploadFile.single("image"),
+  CourseController.editCourse
 );
 
 module.exports = {

@@ -6,6 +6,15 @@ const momentDuration = require("moment-duration-format");
 const { ObjectId } = require("mongodb");
 
 class CourseController extends Controller {
+  createImageAddress(file, protocol, host) {
+    const imageAddress =
+      protocol +
+      "://" +
+      host +
+      "/" +
+      file?.path?.substring(file.path.indexOf("uploads"));
+    return imageAddress;
+  }
   getTotalTime(chapters) {
     let allEpisodes = [];
     for (let chapter of chapters) {
@@ -94,15 +103,14 @@ class CourseController extends Controller {
           throw createError.BadRequest("invalid key sent");
         }
       });
-      const protocol = req.protocol;
-      const host = req.get("host");
-      const imageAddress =
-        protocol +
-        "://" +
-        host +
-        "/" +
-        req.file?.path?.substring(req.file.path.indexOf("uploads"));
-      data.image = imageAddress;
+      if (req.file) {
+        const imageAddress = this.createImageAddress(
+          req.file,
+          req.protocol,
+          req.get("host")
+        );
+        data.image = imageAddress;
+      }
       const course = await courseModel.create(data);
       if (!course) {
         throw createError.InternalServerError("creating course failed");
@@ -117,7 +125,47 @@ class CourseController extends Controller {
   }
   async editCourse(req, res, next) {
     try {
-      return res.send("hello");
+      const { id: courseId } = req.params;
+      const data = req.body;
+      const validItems = [
+        "title",
+        "description",
+        "brif_text",
+        "tags",
+        "categories",
+        "price",
+        "discount",
+        "status",
+        "value",
+        "teacher",
+      ];
+      Object.keys(data).forEach((key) => {
+        if (!validItems.includes(key)) {
+          throw createError.BadRequest("invalid item sent");
+        }
+        if (!data[key] || data[key].length === 0) {
+          throw createError.BadRequest("invalid value sent");
+        }
+      });
+      if (req.file) {
+        const imageAddress = this.createImageAddress(
+          req.file,
+          req.protocol,
+          req.get("host")
+        );
+        data.image = imageAddress;
+      }
+      const update = await courseModel.updateOne(
+        { _id: courseId },
+        { $set: data }
+      );
+      if (update.modifiedCount === 0) {
+        throw createError.InternalServerError("updating course failed");
+      }
+      return res.status(200).json({
+        status: 200,
+        update,
+      });
     } catch (error) {
       next(createError.InternalServerError(error.message ?? error));
     }
