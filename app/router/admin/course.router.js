@@ -23,14 +23,14 @@ router.post(
 
 router.get(
   "/all",
-  isUserAdmin,
+  // isUserAdmin,
   validationMapper,
   CourseController.getCourseList
 );
 
 router.get(
   "/:id",
-  isUserAdmin,
+  // isUserAdmin,
   validateId(),
   validationMapper,
   CourseController.getCourseById

@@ -1,9 +1,27 @@
 const Controller = require("../controller");
 const { courseModel } = require("../../../models/course.model");
 const createError = require("http-errors");
+const moment = require("moment");
+const momentDuration = require("moment-duration-format");
 const { ObjectId } = require("mongodb");
 
 class CourseController extends Controller {
+  getTotalTime(chapters) {
+    let allEpisodes = [];
+    for (let chapter of chapters) {
+      for (let episode of chapter.episodes) {
+        allEpisodes.push(episode);
+      }
+    }
+    let totalTime = "00:00:00";
+    for (let item of allEpisodes) {
+      totalTime = moment
+        .duration(totalTime)
+        .add(moment.duration(item.time))
+        .format("hh:mm:ss", { trim: false });
+    }
+    return totalTime;
+  }
   async aggregateCourse(id) {
     try {
       const courses = await courseModel.aggregate([
@@ -125,6 +143,15 @@ class CourseController extends Controller {
       if (!courses || courses.length === 0) {
         throw createError.NotFound("no course found");
       }
+      for (let i = 0; i < courses.length; i++) {
+        let chapters = [];
+        for (let chapter of courses[i].chapters) {
+          chapters.push(chapter);
+        }
+        const totalTime =
+          chapters.length > 0 ? this.getTotalTime(chapters) : "00:00:00";
+        courses[i].totalTime = totalTime;
+      }
       return res.status(200).json({
         status: 200,
         courses,
@@ -140,9 +167,14 @@ class CourseController extends Controller {
       if (!course || course.length === 0) {
         throw createError.NotFound("not found course");
       }
+      // gather all episodes for calculating total time
+      const chapters = course[0].chapters;
+      const totalTime =
+        chapters.length > 0 ? this.getTotalTime(chapters) : "00:00:00";
+      course[0].totalTime = totalTime;
       return res.status(200).json({
         status: 200,
-        course,
+        course: course[0],
       });
     } catch (error) {
       next(createError.InternalServerError(error.message ?? error));

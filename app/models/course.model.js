@@ -34,7 +34,7 @@ const Schema = new mongoose.Schema({
   discount: { type: Number, default: 0 },
   status: { type: String, default: "notStarted" }, // notStarted, ongoing, done
   value: { type: String, default: "free" }, // free, monetary, premium
-  time: { type: String, default: "00:00:00" },
+  total_time: { type: String, default: "00:00:00" },
   teacher: { type: mongoose.Types.ObjectId, ref: "users", required: true },
   chapters: { type: [Chapter], default: [] },
   students: { type: [mongoose.Types.ObjectId], ref: "users", default: [] },
