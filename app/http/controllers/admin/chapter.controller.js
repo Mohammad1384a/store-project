@@ -14,7 +14,7 @@ class ChapterController extends Controller {
         { $push: { chapters: data } }
       );
       if (chapter.modifiedCount === 0) {
-        throw createError.InternalServerError("adding chapter failed");
+        next(createError.InternalServerError("adding chapter failed"));
       }
       return res.status(200).json({
         status: 200,
@@ -32,7 +32,7 @@ class ChapterController extends Controller {
         { chapters: 1, _id: 0, title: 1 }
       );
       if (!course) {
-        throw createError.NotFound("not found course");
+        next(createError.NotFound("not found course"));
       }
       return res.status(200).json({
         status: 200,
@@ -50,7 +50,7 @@ class ChapterController extends Controller {
         { $pull: { chapters: { _id: new ObjectId(chapterId) } } }
       );
       if (remove.modifiedCount === 0) {
-        throw createError.InternalServerError("deleting chapter failed");
+        next(createError.InternalServerError("deleting chapter failed"));
       }
       return res.status(200).json({
         status: 200,
@@ -65,15 +65,15 @@ class ChapterController extends Controller {
       const { id: chapterId } = req.params;
       const data = req.body;
       if (Object.keys(data).length === 0) {
-        throw createError.BadRequest("invalid data sent");
+        next(createError.BadRequest("invalid data sent"));
       }
       const validItems = ["title", "body"];
       Object.keys(data).forEach((key) => {
         if (!validItems.includes(key)) {
-          throw createError.BadRequest("invalid item send");
+          next(createError.BadRequest("invalid item send"));
         }
         if (!data[key] || data[key].length === 0) {
-          throw createError.BadRequest("invalid value sent");
+          next(createError.BadRequest("invalid value sent"));
         }
         data[key].trim();
       });

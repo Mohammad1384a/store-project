@@ -25,7 +25,7 @@ class AuthController extends Controller {
           token,
         });
         if (!createUser)
-          throw createError.InternalServerError("creating User failed");
+          next(createError.InternalServerError("creating User failed"));
         return res.status(200).json({
           status: 200,
           createUser,
@@ -36,7 +36,7 @@ class AuthController extends Controller {
         { $set: { otp, token } }
       );
       if (!updateUser.modifiedCount)
-        throw createError.InternalServerError("sending otp failed");
+        next(createError.InternalServerError("sending otp failed"));
       return res.status(200).json({
         status: 200,
         updateUser,
@@ -51,11 +51,11 @@ class AuthController extends Controller {
       const { phone, code } = req.body;
       const user = await userModel.findOne({ phone: phone, "otp.code": code });
       if (!user) {
-        throw createError.BadRequest("code or mobile phone is not valid");
+        next(createError.BadRequest("code or mobile phone is not valid"));
       }
       const now = new Date().getTime();
       if (user.otp.expiresIn < now) {
-        throw createError.Unauthorized("session expired");
+        next(createError.Unauthorized("session expired"));
       }
       const userId = user._id.toString();
       const refreshToken = await generateRefreshToken(phone, userId);
@@ -74,13 +74,13 @@ class AuthController extends Controller {
       const { phone } = req.body;
       const user = await userModel.findOne({ phone });
       if (!user) {
-        throw createError.BadRequest("not found user");
+        next(createError.BadRequest("not found user"));
       }
       const userId = user._id.toString();
       const newToken = await generateRefreshToken(phone, userId);
       if (!newToken) {
-        throw createError.InternalServerError(
-          "generating refresh token failed"
+        next(
+          createError.InternalServerError("generating refresh token failed")
         );
       }
       return res.status(200).json({

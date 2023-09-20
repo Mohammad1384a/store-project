@@ -21,7 +21,7 @@ class BlogController extends Controller {
         categories,
       });
       if (!blog) {
-        throw createError.InternalServerError("creating blog failed");
+        next(createError.InternalServerError("creating blog failed"));
       }
       return res.status(200).json({
         status: 200,
@@ -70,6 +70,9 @@ class BlogController extends Controller {
           },
         },
       ]);
+      if (!blogs || blogs.length === 0) {
+        next(createError.NotFound("no blog found"));
+      }
       return res.status(200).json({
         status: 200,
         blogs,
@@ -83,7 +86,7 @@ class BlogController extends Controller {
       const { id } = req.params;
       const blog = await blogModel.findById(id);
       if (!blog) {
-        throw createError.NotFound("Blog not found");
+        next(createError.NotFound("Blog not found"));
       }
       return res.status(200).json({
         status: 200,
@@ -98,7 +101,7 @@ class BlogController extends Controller {
       const { id } = req.params;
       const blog = await blogModel.deleteOne({ _id: id });
       if (blog.deletedCount === 0) {
-        throw createError.InternalServerError("deleting blog failed");
+        next(createError.InternalServerError("deleting blog failed"));
       }
       return res.status(200).json({
         status: 200,
@@ -126,7 +129,7 @@ class BlogController extends Controller {
       });
       const update = await blogModel.updateOne({ _id: id }, { $set: data });
       if (update.modifiedCount === 0) {
-        throw createError.InternalServerError("updating Blog failed");
+        next(createError.InternalServerError("updating Blog failed"));
       }
       return res.status(200).json({
         status: 200,
@@ -141,10 +144,10 @@ class BlogController extends Controller {
       const { id } = req.params;
       const blog = await blogModel.findById(id);
       if (!blog) {
-        throw createError.NotFound("not found blog");
+        next(createError.NotFound("not found blog"));
       }
       if (blog.comments.length === 0) {
-        throw createError.NotFound("blog has no comments");
+        next(createError.NotFound("blog has no comments"));
       }
       return res.status(200).json({
         status: 200,

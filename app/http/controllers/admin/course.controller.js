@@ -81,7 +81,7 @@ class CourseController extends Controller {
   async addCourse(req, res, next) {
     try {
       if (!req.file) {
-        throw createError.BadRequest("you should at leas choose one image");
+        next(createError.BadRequest("you should at leas choose one image"));
       }
       let data = req.body;
       const validItems = [
@@ -100,7 +100,7 @@ class CourseController extends Controller {
       ];
       Object.keys(data).forEach((key) => {
         if (!validItems.includes(key)) {
-          throw createError.BadRequest("invalid key sent");
+          next(createError.BadRequest("invalid key sent"));
         }
       });
       if (req.file) {
@@ -113,7 +113,7 @@ class CourseController extends Controller {
       }
       const course = await courseModel.create(data);
       if (!course) {
-        throw createError.InternalServerError("creating course failed");
+        next(createError.InternalServerError("creating course failed"));
       }
       return res.status(200).json({
         status: 200,
@@ -141,10 +141,10 @@ class CourseController extends Controller {
       ];
       Object.keys(data).forEach((key) => {
         if (!validItems.includes(key)) {
-          throw createError.BadRequest("invalid item sent");
+          next(createError.BadRequest("invalid item sent"));
         }
         if (!data[key] || data[key].length === 0) {
-          throw createError.BadRequest("invalid value sent");
+          next(createError.BadRequest("invalid value sent"));
         }
       });
       if (req.file) {
@@ -160,7 +160,7 @@ class CourseController extends Controller {
         { $set: data }
       );
       if (update.modifiedCount === 0) {
-        throw createError.InternalServerError("updating course failed");
+        next(createError.InternalServerError("updating course failed"));
       }
       return res.status(200).json({
         status: 200,
@@ -175,7 +175,7 @@ class CourseController extends Controller {
       const { id: _id } = req.params;
       const remove = await courseModel.deleteOne({ _id });
       if (remove.deletedCount === 0) {
-        throw createError.InternalServerError("deleting course failed");
+        next(createError.InternalServerError("deleting course failed"));
       }
       return res.status(200).json({
         status: 200,
@@ -189,7 +189,7 @@ class CourseController extends Controller {
     try {
       const courses = await this.aggregateCourse();
       if (!courses || courses.length === 0) {
-        throw createError.NotFound("no course found");
+        next(createError.NotFound("no course found"));
       }
       for (let i = 0; i < courses.length; i++) {
         let chapters = [];
@@ -213,7 +213,7 @@ class CourseController extends Controller {
       const { id } = req.params;
       const course = await this.aggregateCourse(id);
       if (!course || course.length === 0) {
-        throw createError.NotFound("not found course");
+        next(createError.NotFound("not found course"));
       }
       // gather all episodes for calculating total time
       const chapters = course[0].chapters;

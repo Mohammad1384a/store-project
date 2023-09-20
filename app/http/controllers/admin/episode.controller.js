@@ -30,7 +30,7 @@ class EpisodeController extends Controller {
       const { title, body, value } = req.body;
       const { id: chapterId } = req.params;
       if (!req.file) {
-        throw createError.BadRequest("you should a video for your episode");
+        next(createError.BadRequest("you should a video for your episode"));
       }
       const { time, videoPath } = await this.videoAddress(
         req.file,
@@ -51,7 +51,7 @@ class EpisodeController extends Controller {
         { $push: { "chapters.$.episodes": data } }
       );
       if (episode.modifiedCount === 0) {
-        throw createError.InternalServerError("creating episode failed");
+        next(createError.InternalServerError("creating episode failed"));
       }
       return res.status(200).json({
         staus: 200,
@@ -69,7 +69,7 @@ class EpisodeController extends Controller {
         { $pull: { "chapters.$.episodes": { _id: new ObjectId(episodeId) } } }
       );
       if (remove.modifiedCount === 0) {
-        throw createError.InternalServerError("removing episode failed");
+        next(createError.InternalServerError("removing episode failed"));
       }
       return res.status(200).json({
         status: 200,
@@ -86,10 +86,10 @@ class EpisodeController extends Controller {
       const validItems = ["title", "body", "value"];
       Object.keys(data).forEach((key) => {
         if (!validItems.includes(key)) {
-          throw createError.BadRequest("invalid key sent");
+          next(createError.BadRequest("invalid key sent"));
         }
         if (!data[key] || data[key].length === 0) {
-          throw createError.BadRequest("bad value sent");
+          next(createError.BadRequest("bad value sent"));
         }
       });
       const course = await courseModel.findOne(
@@ -99,7 +99,7 @@ class EpisodeController extends Controller {
         { chapters: 1 }
       );
       if (!course) {
-        throw createError.NotFound("not found episode");
+        next(createError.NotFound("not found episode"));
       }
       const result = course.chapters;
       const videoAddress = req.file
@@ -141,7 +141,7 @@ class EpisodeController extends Controller {
         { $set: { "chapters.$.episodes": episodes } }
       );
       if (update.modifiedCount === 0) {
-        throw createError.InternalServerError("updating episode failed");
+        next(createError.InternalServerError("updating episode failed"));
       }
       return res.status(200).json({
         status: 200,
