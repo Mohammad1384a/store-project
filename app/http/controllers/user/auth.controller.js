@@ -24,8 +24,9 @@ class AuthController extends Controller {
           username: code,
           token,
         });
-        if (!createUser)
-          next(createError.InternalServerError("creating User failed"));
+        if (!createUser) {
+          return next(createError.InternalServerError("creating User failed"));
+        }
         return res.status(200).json({
           status: 200,
           createUser,
@@ -35,8 +36,9 @@ class AuthController extends Controller {
         { phone: phone },
         { $set: { otp, token } }
       );
-      if (!updateUser.modifiedCount)
-        next(createError.InternalServerError("sending otp failed"));
+      if (!updateUser.modifiedCount) {
+        return next(createError.InternalServerError("sending otp failed"));
+      }
       return res.status(200).json({
         status: 200,
         updateUser,
@@ -51,11 +53,13 @@ class AuthController extends Controller {
       const { phone, code } = req.body;
       const user = await userModel.findOne({ phone: phone, "otp.code": code });
       if (!user) {
-        next(createError.BadRequest("code or mobile phone is not valid"));
+        return next(
+          createError.BadRequest("code or mobile phone is not valid")
+        );
       }
       const now = new Date().getTime();
       if (user.otp.expiresIn < now) {
-        next(createError.Unauthorized("session expired"));
+        return next(createError.Unauthorized("session expired"));
       }
       const userId = user._id.toString();
       const refreshToken = await generateRefreshToken(phone, userId);
@@ -74,12 +78,12 @@ class AuthController extends Controller {
       const { phone } = req.body;
       const user = await userModel.findOne({ phone });
       if (!user) {
-        next(createError.BadRequest("not found user"));
+        return next(createError.BadRequest("not found user"));
       }
       const userId = user._id.toString();
       const newToken = await generateRefreshToken(phone, userId);
       if (!newToken) {
-        next(
+        return next(
           createError.InternalServerError("generating refresh token failed")
         );
       }

@@ -8,7 +8,9 @@ class CategoryController extends Controller {
       const { title, parent } = req.body;
       const create = await categoryModel.create({ title, parent });
       if (!create) {
-        next(createError.InternalServerError("creating category failed"));
+        return next(
+          createError.InternalServerError("creating category failed")
+        );
       }
       return res.status(200).json({
         status: 200,
@@ -23,7 +25,9 @@ class CategoryController extends Controller {
       const { id } = req.params;
       const remove = await categoryModel.deleteOne({ _id: id });
       if (!remove.deletedCount) {
-        next(createError.InternalServerError("deleting category failed"));
+        return next(
+          createError.InternalServerError("deleting category failed")
+        );
       }
       return res.status(200).json({
         status: 200,
@@ -51,7 +55,9 @@ class CategoryController extends Controller {
         );
       }
       if (!update.modifiedCount) {
-        next(createError.InternalServerError("updating category failed"));
+        return next(
+          createError.InternalServerError("updating category failed")
+        );
       }
       return res.status(200).json({
         status: 200,
@@ -65,7 +71,7 @@ class CategoryController extends Controller {
     try {
       const categories = await categoryModel.find({});
       if (categories.length === 0) {
-        next(createError.BadRequest("no gategories found"));
+        return next(createError.BadRequest("no gategories found"));
       }
       return res.status(200).json({
         status: 200,
@@ -80,7 +86,7 @@ class CategoryController extends Controller {
       const { id } = req.params;
       const category = await categoryModel.findById({ _id: id });
       if (!category) {
-        next(createError.BadRequest("not found category"));
+        return next(createError.BadRequest("not found category"));
       }
       return res.status(200).json({
         status: 200,
@@ -111,7 +117,7 @@ class CategoryController extends Controller {
         { $project: { __v: 0, "children.parent": 0, "children.__v": 0 } },
       ]);
       if (!parents || parents.length === 0) {
-        next(createError.NotFound("no parents found"));
+        return next(createError.NotFound("no parents found"));
       }
       return res.status(200).json({
         status: 200,
@@ -126,7 +132,7 @@ class CategoryController extends Controller {
       const { parent } = req.params;
       const children = await categoryModel.find({ parent });
       if (children.length === 0) {
-        next(createError.BadRequest("not parents found"));
+        return next(createError.BadRequest("not parents found"));
       }
       return res.status(200).json({
         status: 200,

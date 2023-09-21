@@ -8,13 +8,12 @@ class ChapterController extends Controller {
     try {
       const data = req.body;
       const { id } = req.params;
-      console.log(data, req.body);
       const chapter = await courseModel.updateOne(
         { _id: id },
         { $push: { chapters: data } }
       );
       if (chapter.modifiedCount === 0) {
-        next(createError.InternalServerError("adding chapter failed"));
+        return next(createError.InternalServerError("adding chapter failed"));
       }
       return res.status(200).json({
         status: 200,
@@ -32,7 +31,7 @@ class ChapterController extends Controller {
         { chapters: 1, _id: 0, title: 1 }
       );
       if (!course) {
-        next(createError.NotFound("not found course"));
+        return next(createError.NotFound("not found course"));
       }
       return res.status(200).json({
         status: 200,
@@ -50,7 +49,7 @@ class ChapterController extends Controller {
         { $pull: { chapters: { _id: new ObjectId(chapterId) } } }
       );
       if (remove.modifiedCount === 0) {
-        next(createError.InternalServerError("deleting chapter failed"));
+        return next(createError.InternalServerError("deleting chapter failed"));
       }
       return res.status(200).json({
         status: 200,
@@ -65,15 +64,15 @@ class ChapterController extends Controller {
       const { id: chapterId } = req.params;
       const data = req.body;
       if (Object.keys(data).length === 0) {
-        next(createError.BadRequest("invalid data sent"));
+        return next(createError.BadRequest("invalid data sent"));
       }
       const validItems = ["title", "body"];
       Object.keys(data).forEach((key) => {
         if (!validItems.includes(key)) {
-          next(createError.BadRequest("invalid item send"));
+          return next(createError.BadRequest("invalid item send"));
         }
         if (!data[key] || data[key].length === 0) {
-          next(createError.BadRequest("invalid value sent"));
+          return next(createError.BadRequest("invalid value sent"));
         }
         data[key].trim();
       });

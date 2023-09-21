@@ -7,7 +7,7 @@ class ProductController extends Controller {
     try {
       const data = req.body;
       if (req.files.length === 0 || !req.file) {
-        next(
+        return next(
           createError.BadRequest("you must choose 2-5 images for your product")
         );
       }
@@ -39,13 +39,13 @@ class ProductController extends Controller {
       ];
       Object.keys(data).forEach((key) => {
         if (!validItems.includes(key)) {
-          next(createError.BadRequest("invalid properties sent " + key));
+          return next(createError.BadRequest("invalid properties sent " + key));
         }
       });
       data.images = imagesAddress;
       const product = await productModel.create(data);
       if (!product) {
-        next(createError.InternalServerError("creating product failed"));
+        return next(createError.InternalServerError("creating product failed"));
       }
       return res.status(200).json({
         status: 200,
@@ -63,7 +63,7 @@ class ProductController extends Controller {
         { __v: 0, _id: 0 }
       );
       if (products.length === 0) {
-        next(createError.NotFound("no products found"));
+        return next(createError.NotFound("no products found"));
       }
       return res.status(200).json({
         status: 200,
@@ -78,7 +78,7 @@ class ProductController extends Controller {
       const { id } = req.params;
       const product = await productModel.findById(id);
       if (!product) {
-        next(createError.NotFound("no such a product found"));
+        return next(createError.NotFound("no such a product found"));
       }
       return res.status(200).json({
         status: 200,
@@ -93,7 +93,7 @@ class ProductController extends Controller {
       const { id } = req.params;
       const product = await productModel.findById(id);
       if (!product) {
-        next(createError.NotFound("no such a project found"));
+        return next(createError.NotFound("no such a project found"));
       }
       const protocol = req.protocol;
       const host = req.get("host");
@@ -128,12 +128,12 @@ class ProductController extends Controller {
       ];
       Object.keys(data).forEach((key) => {
         if (!validItems.includes(key)) {
-          next(createError.BadRequest("invalid key sent" + key));
+          return next(createError.BadRequest("invalid key sent" + key));
         }
       });
       const update = await productModel.updateOne({ _id: id }, { $set: data });
       if (update.modifiedCount === 0) {
-        next(createError.InternalServerError("updating product failed"));
+        return next(createError.InternalServerError("updating product failed"));
       }
       return res.status(200).json({
         status: 200,
@@ -148,7 +148,7 @@ class ProductController extends Controller {
       const { id } = req.params;
       const remove = await productModel.deleteOne({ _id: id });
       if (remove.deletedCount === 0) {
-        next(createError.InternalServerError("deleting product failed"));
+        return next(createError.InternalServerError("deleting product failed"));
       }
       return res.status(200).json({
         status: 200,
