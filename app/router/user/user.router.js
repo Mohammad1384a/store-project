@@ -1,4 +1,5 @@
 const { Router } = require("express");
+const { roleRouter } = require("./role.router");
 const { authRouter } = require("./auth.router");
 const UserController = require("../../http/controllers/user/user.controller");
 const { isUserAdmin } = require("../../http/middlewares/isUserAdmin");
@@ -10,6 +11,8 @@ const {
 const { isUserLoggedIn } = require("../../http/middlewares/isUserLoggedIn");
 const router = Router();
 
+router.use("/auth", authRouter);
+router.use("/role", roleRouter);
 router.get("/all", isUserAdmin, validationMapper, UserController.getUserList);
 router.put(
   "/edit/:id",
@@ -23,12 +26,10 @@ router.put(
 router.get(
   "/:id",
   validateId(),
-  // isUserLoggedIn,
+  isUserLoggedIn,
   validationMapper,
   UserController.getUserById
 );
-
-router.use("/auth", authRouter);
 
 module.exports = {
   userRouter: router,
