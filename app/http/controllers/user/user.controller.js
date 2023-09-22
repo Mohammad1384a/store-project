@@ -5,17 +5,30 @@ const createError = require("http-errors");
 class UserController extends Controller {
   async getUserList(req, res, next) {
     try {
-      const query = req.query.search;
-      const users = await userModel.find(
-        query ? { $text: { $search: query } } : {},
-        { __v: 0, _id: 0 }
-      );
+      const { search } = req.query;
+      const users = await userModel.find({}, { __v: 0, _id: 0 });
       if (users.length === 0) {
         return next(createError.NotFound("no users found"));
       }
+      const filterItems = [
+        "first_name",
+        "last_name",
+        "phone",
+        "email",
+        "username",
+      ];
+      const filter = search
+        ? users.filter((user) => {
+            for (let item in user) {
+              if (filterItems?.includes(item) && user[item]?.includes(search)) {
+                return user;
+              }
+            }
+          })
+        : null;
       return res.status(200).json({
         status: 200,
-        users,
+        users: filter ?? users,
       });
     } catch (error) {
       next(createError.InternalServerError(error.message ?? error));

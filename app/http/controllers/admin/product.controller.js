@@ -57,17 +57,27 @@ class ProductController extends Controller {
   }
   async getProductList(req, res, next) {
     try {
-      const query = req.query.search;
-      const products = await productModel.find(
-        query ? { $text: { $search: query } } : {},
-        { __v: 0, _id: 0 }
-      );
+      const { search } = req.query;
+      const products = await productModel.find({}, { __v: 0, _id: 0 });
       if (products.length === 0) {
         return next(createError.NotFound("no products found"));
       }
+      const filterItems = ["title", "brief_text", "body"];
+      const filter = search
+        ? products.filter((product) => {
+            for (let item in product) {
+              if (
+                filterItems?.includes(item) &&
+                product[item]?.includes(search)
+              ) {
+                return product;
+              }
+            }
+          })
+        : null;
       return res.status(200).json({
         status: 200,
-        products,
+        products: filter ?? products,
       });
     } catch (error) {
       next(createError.InternalServerError(error?.message ?? error));

@@ -26,14 +26,6 @@ const Schema = new mongoose.Schema(
   { timestamps: true, toJSON: { virtuals: true } }
 );
 
-Schema.index({
-  username: "text",
-  phone: "text",
-  first_name: "text",
-  last_name: " text",
-  email: "text",
-});
-
 const model = mongoose.model("user", Schema);
 
 module.exports = {
