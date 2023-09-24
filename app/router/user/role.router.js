@@ -5,6 +5,7 @@ const { permissionRouter } = require("./permission.router");
 const { isUserAdmin } = require("../../http/middlewares/isUserAdmin");
 const { roleValidator } = require("../../http/validators/user/role.validator");
 const { validationMapper } = require("../../http/validators/validationMapper");
+const { validateId } = require("../../http/validators/admin/product.validator");
 
 router.use("/permission", permissionRouter);
 router.post(
@@ -16,6 +17,14 @@ router.post(
 );
 
 router.get("/all", isUserAdmin, validationMapper, RoleConroller.getRolesList);
+
+router.delete(
+  "/remove/:id",
+  isUserAdmin,
+  validateId(),
+  validationMapper,
+  RoleConroller.removeRole
+);
 
 module.exports = {
   roleRouter: router,

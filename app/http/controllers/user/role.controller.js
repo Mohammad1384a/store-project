@@ -38,7 +38,15 @@ class RoleConroller extends Controller {
   }
   async removeRole(req, res, next) {
     try {
-      return res.send("hello");
+      const { id: _id } = req.params;
+      const remove = await roleModel.deleteOne({ _id });
+      if (remove.deletedCount === 0) {
+        return next(createError.InternalServerError("removing role failed"));
+      }
+      return res.status(200).json({
+        status: 200,
+        remove,
+      });
     } catch (error) {
       next(createError.InternalServerError(error.message ?? error));
     }
