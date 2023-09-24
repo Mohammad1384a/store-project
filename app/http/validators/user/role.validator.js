@@ -15,6 +15,21 @@ function roleValidator() {
   ];
 }
 
+function editRoleValidator() {
+  return [
+    body("title")
+      .optional()
+      .isString()
+      .isLength({ min: 3, max: 10 })
+      .withMessage("title must be between 3-10 characters"),
+    body("permissions")
+      .optional()
+      .isMongoId()
+      .withMessage("please entery valid mongoIds")
+      .withMessage("permissions must be between 1-5 ids"),
+  ];
+}
+
 function permissionValiator() {
   return [
     body("title")
@@ -46,6 +61,7 @@ function editPermissionValidtor() {
 
 module.exports = {
   permissionValiator,
+  editRoleValidator,
   editPermissionValidtor,
   roleValidator,
 };

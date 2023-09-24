@@ -3,7 +3,10 @@ const RoleConroller = require("../../http/controllers/user/role.controller");
 const router = Router();
 const { permissionRouter } = require("./permission.router");
 const { isUserAdmin } = require("../../http/middlewares/isUserAdmin");
-const { roleValidator } = require("../../http/validators/user/role.validator");
+const {
+  roleValidator,
+  editRoleValidator,
+} = require("../../http/validators/user/role.validator");
 const { validationMapper } = require("../../http/validators/validationMapper");
 const { validateId } = require("../../http/validators/admin/product.validator");
 
@@ -24,6 +27,15 @@ router.delete(
   validateId(),
   validationMapper,
   RoleConroller.removeRole
+);
+
+router.put(
+  "/edit/:id",
+  // isUserAdmin,
+  validateId(),
+  editRoleValidator(),
+  validationMapper,
+  RoleConroller.editRole
 );
 
 module.exports = {
