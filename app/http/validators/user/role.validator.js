@@ -15,6 +15,21 @@ function roleValidator() {
   ];
 }
 
+function permissionValiator() {
+  return [
+    body("title")
+      .isString()
+      .isLength({ min: 3, max: 12 })
+      .withMessage("title must be between 3-12 characters"),
+    body("description")
+      .optional()
+      .isString()
+      .isLength({ min: 10, max: 40 })
+      .withMessage("description should be between 10-40 characters"),
+  ];
+}
+
 module.exports = {
+  permissionValiator,
   roleValidator,
 };

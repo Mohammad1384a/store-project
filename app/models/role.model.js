@@ -1,7 +1,7 @@
 const mongoose = require("mongoose");
 
 const PermissionSchema = {
-  title: { type: String, unique: true, required: true },
+  title: { type: String, unique: true, required: true, uppercase: true },
   description: { type: String, default: "" },
 };
 
