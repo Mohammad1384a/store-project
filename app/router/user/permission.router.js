@@ -24,6 +24,13 @@ router.delete(
   PermissionController.removePermission
 );
 
+router.get(
+  "/all",
+  // isUserAdmin,
+  validationMapper,
+  PermissionController.getPermissionList
+);
+
 module.exports = {
   permissionRouter: router,
 };

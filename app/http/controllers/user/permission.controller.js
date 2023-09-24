@@ -5,7 +5,19 @@ const createError = require("http-errors");
 class PermissionController extends Controller {
   async getPermissionList(req, res, next) {
     try {
-      return res.send("hello");
+      const permissions = await permissionModel.find({});
+      if (!permissions) {
+        return next(
+          createError.InternalServerError("fetching permissions failed")
+        );
+      }
+      if (permissions.length === 0) {
+        return next(createError.NotFoundj("not permissions found"));
+      }
+      return res.status(200).json({
+        status: 200,
+        permissions,
+      });
     } catch (error) {
       next(createError.InternalServerError(error.message ?? error));
     }
