@@ -6,13 +6,22 @@ const {
   permissionValiator,
 } = require("../../http/validators/user/role.validator");
 const { validationMapper } = require("../../http/validators/validationMapper");
+const { validateId } = require("../../http/validators/admin/product.validator");
 
 router.post(
   "/add",
-  // isUserAdmin,
+  isUserAdmin,
   permissionValiator(),
   validationMapper,
   PermissionController.addPermission
+);
+
+router.delete(
+  "/remove/:id",
+  isUserAdmin,
+  validateId(),
+  validationMapper,
+  PermissionController.removePermission
 );
 
 module.exports = {

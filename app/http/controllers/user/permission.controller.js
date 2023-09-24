@@ -32,7 +32,17 @@ class PermissionController extends Controller {
 
   async removePermission(req, res, next) {
     try {
-      return res.send("hello");
+      const { id: _id } = req.params;
+      const remove = await permissionModel.deleteOne({ _id });
+      if (remove.deletedCount === 0) {
+        return next(
+          createError.InternalServerError("removing permission failed")
+        );
+      }
+      return res.status(200).json({
+        status: 200,
+        remove,
+      });
     } catch (error) {
       next(createError.InternalServerError(error.message ?? error));
     }
