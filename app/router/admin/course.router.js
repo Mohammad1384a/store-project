@@ -7,7 +7,6 @@ const {
   editCourseValidator,
 } = require("../../http/validators/admin/course.validator");
 const { validationMapper } = require("../../http/validators/validationMapper");
-const { isUserAdmin } = require("../../http/middlewares/isUserAdmin");
 const { uploadFile } = require("../../http/middlewares/multer");
 const { validateId } = require("../../http/validators/admin/product.validator");
 
@@ -16,22 +15,15 @@ router.use("/chapter", chapterRouter);
 router.post(
   "/add",
   courseValidator(),
-  isUserAdmin,
   validationMapper,
   uploadFile.single("image"),
   CourseController.addCourse
 );
 
-router.get(
-  "/all",
-  isUserAdmin,
-  validationMapper,
-  CourseController.getCourseList
-);
+router.get("/all", CourseController.getCourseList);
 
 router.get(
   "/:id",
-  isUserAdmin,
   validateId(),
   validationMapper,
   CourseController.getCourseById
@@ -39,7 +31,6 @@ router.get(
 
 router.delete(
   "/remove/:id",
-  isUserAdmin,
   validateId(),
   validationMapper,
   CourseController.removeCourse
@@ -47,7 +38,6 @@ router.delete(
 
 router.put(
   "/edit/:id",
-  isUserAdmin,
   validateId(),
   editCourseValidator(),
   validationMapper,

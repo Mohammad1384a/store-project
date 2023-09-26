@@ -10,7 +10,7 @@ class AuthController extends Controller {
   async getOTP(req, res, next) {
     try {
       const { phone } = req.body;
-      const user = await this.userExists(phone);
+      const user = await this.userExists(phone.toString());
       const code = randomNumber().toString();
       const otp = {
         code,
@@ -51,7 +51,7 @@ class AuthController extends Controller {
   async validateOTP(req, res, next) {
     try {
       const { phone, code } = req.body;
-      const user = await userModel.findOne({ phone: phone, "otp.code": code });
+      const user = await userModel.findOne({ phone, "otp.code": code });
       if (!user) {
         return next(
           createError.BadRequest("code or mobile phone is not valid")

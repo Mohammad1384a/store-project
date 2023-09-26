@@ -6,13 +6,11 @@ const {
   updateEpisodeValidator,
 } = require("../../http/validators/admin/chapter.validator");
 const { validationMapper } = require("../../http/validators/validationMapper");
-const { isUserAdmin } = require("../../http/middlewares/isUserAdmin");
 const { uploadVideo } = require("../../http/middlewares/multer");
 const { validateId } = require("../../http/validators/admin/product.validator");
 
 router.put(
   "/add/:id",
-  isUserAdmin,
   validateId(),
   episodeValidator(),
   validationMapper,
@@ -22,7 +20,6 @@ router.put(
 
 router.delete(
   "/remove/:id",
-  isUserAdmin,
   validateId(),
   validationMapper,
   EpisodeController.removeEpisode
@@ -30,7 +27,6 @@ router.delete(
 
 router.put(
   "/edit/:id",
-  isUserAdmin,
   validateId(),
   updateEpisodeValidator(),
   validationMapper,
