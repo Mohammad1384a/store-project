@@ -3,12 +3,16 @@ const { CommentSchema } = require("./public.model");
 
 const Schema = new mongoose.Schema(
   {
-    author: { type: mongoose.Types.ObjectId, required: true },
+    author: { type: mongoose.Types.ObjectId, ref: "user", required: true },
     title: { type: String, required: true },
     brief_text: { type: String, required: true },
     image: { type: String, required: true },
     tags: { type: [String], default: [] },
-    categories: { type: [mongoose.Types.ObjectId], required: true },
+    categories: {
+      type: [mongoose.Types.ObjectId],
+      ref: "category",
+      required: true,
+    },
     comments: { type: [CommentSchema], default: [] },
     likes: { type: [mongoose.Types.ObjectId], ref: "users", default: [] },
     dislikes: { type: [mongoose.Types.ObjectId], ref: "users", default: [] },

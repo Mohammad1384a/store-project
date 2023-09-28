@@ -5,8 +5,11 @@ const { devRouter } = require("./dev.router");
 const { adminRouter } = require("./admin/admin.router");
 const { isUserPermitted } = require("../http/middlewares/isUserPermitted");
 const router = Router();
+const { graphqlConfig } = require("../graphql/graphql.config");
+const { graphqlHTTP } = require("express-graphql");
 
 router.get("/", HomeController.indexPage);
+router.use("/graphql", graphqlHTTP(graphqlConfig));
 router.use("/user", isUserPermitted(["USER"]), userRouter);
 router.use("/dev", devRouter);
 router.use(
