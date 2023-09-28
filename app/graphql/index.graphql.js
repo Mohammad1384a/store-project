@@ -4,6 +4,7 @@ const {
   categoriesResolver,
   categoriesChildrenResolver,
 } = require("./resolvers/categories.resolver");
+const { productResolver } = require("./resolvers/product.resolver");
 
 const RootQuery = new GraphQLObjectType({
   name: "RootQuery",
@@ -11,6 +12,7 @@ const RootQuery = new GraphQLObjectType({
     blogs: blogResolver,
     categories: categoriesResolver,
     categoriesChildren: categoriesChildrenResolver,
+    products: productResolver,
   },
 });
 

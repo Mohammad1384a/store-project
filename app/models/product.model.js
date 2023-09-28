@@ -21,7 +21,7 @@ const Schema = new mongoose.Schema({
   quentity: { type: Number, default: 0 },
   type: { type: String, required: true }, // virtual,physical
   format: { type: String },
-  teacher: { type: mongoose.Types.ObjectId, required: true },
+  vendor: { type: mongoose.Types.ObjectId, ref: "user", required: true },
   features: {
     type: Object,
     default: {
