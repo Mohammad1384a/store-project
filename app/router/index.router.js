@@ -10,7 +10,7 @@ const { graphqlHTTP } = require("express-graphql");
 
 router.get("/", HomeController.indexPage);
 router.use("/graphql", graphqlHTTP(graphqlConfig));
-router.use("/user", isUserPermitted(["USER"]), userRouter);
+router.use("/user", userRouter);
 router.use("/dev", devRouter);
 router.use(
   "/admin",

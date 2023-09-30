@@ -31,7 +31,9 @@ class Application {
   }
   DBConnection(DB_URI) {
     mongoose
-      .connect(DB_URI)
+      .connect(DB_URI, {
+        family: 4,
+      })
       .then(() => {
         console.log("DB conected Successfully");
       })
