@@ -15,7 +15,6 @@ const Schema = new mongoose.Schema(
     },
     comments: { type: [CommentSchema], default: [] },
     likes: { type: [mongoose.Types.ObjectId], ref: "users", default: [] },
-    dislikes: { type: [mongoose.Types.ObjectId], ref: "users", default: [] },
     bookmarks: { type: [mongoose.Types.ObjectId], ref: "users", default: [] },
   },
   { timeStamps: true, versionKey: false }

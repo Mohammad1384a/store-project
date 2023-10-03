@@ -14,7 +14,6 @@ const Schema = new mongoose.Schema({
   },
   comments: { type: [CommentSchema], default: [] },
   likes: { type: [mongoose.Types.ObjectId], default: [] },
-  dislikes: { type: [mongoose.Types.ObjectId], default: [] },
   bookmarks: { type: [mongoose.Types.ObjectId], default: [] },
   price: { type: Number, default: 0 },
   discount: { type: Number, default: 0 },

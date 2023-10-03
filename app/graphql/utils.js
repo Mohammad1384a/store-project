@@ -74,8 +74,38 @@ function like(model, id, user, likeExists) {
   }
 }
 
+function bookmark(model, id, user, bookmarkExists) {
+  switch (model) {
+    case "blog": {
+      return blogModel.updateOne(
+        { _id: id },
+        bookmarkExists
+          ? { $pull: { bookmarks: user._id } }
+          : { $push: { bookmarks: user._id } }
+      );
+    }
+    case "course": {
+      return courseModel.updateOne(
+        { _id: id },
+        bookmarkExists
+          ? { $pull: { bookmarks: user._id } }
+          : { $push: { bookmarks: user._id } }
+      );
+    }
+    case "product": {
+      return productModel.updateOne(
+        { _id: id },
+        bookmarkExists
+          ? { $pull: { bookmarks: user._id } }
+          : { $push: { bookmarks: user._id } }
+      );
+    }
+  }
+}
+
 module.exports = {
   checkExistence,
   returnUpdate,
+  bookmark,
   like,
 };
