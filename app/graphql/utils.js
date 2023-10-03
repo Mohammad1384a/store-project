@@ -45,7 +45,37 @@ function returnUpdate(model, id, data) {
   }
 }
 
+function like(model, id, user, likeExists) {
+  switch (model) {
+    case "blog": {
+      return blogModel.updateOne(
+        { _id: id },
+        likeExists
+          ? { $pull: { likes: user._id } }
+          : { $push: { likes: user._id } }
+      );
+    }
+    case "course": {
+      return courseModel.updateOne(
+        { _id: id },
+        likeExists
+          ? { $pull: { likes: user._id } }
+          : { $push: { likes: user._id } }
+      );
+    }
+    case "product": {
+      return productModel.updateOne(
+        { _id: id },
+        likeExists
+          ? { $pull: { likes: user._id } }
+          : { $push: { likes: user._id } }
+      );
+    }
+  }
+}
+
 module.exports = {
   checkExistence,
   returnUpdate,
+  like,
 };

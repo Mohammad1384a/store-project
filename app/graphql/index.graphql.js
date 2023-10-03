@@ -1,4 +1,5 @@
 const { GraphQLObjectType, GraphQLSchema } = require("graphql");
+const { likeMutation } = require("./mutations/like.mutation");
 const { blogResolver } = require("./resolvers/blog.resolver");
 const { addComment } = require("./mutations/comment.mutation");
 const {
@@ -23,6 +24,9 @@ const RootMutation = new GraphQLObjectType({
     addBlogComment: addComment,
     addCourseComment: addComment,
     addProductComment: addComment,
+    likeBlog: likeMutation,
+    likeCourse: likeMutation,
+    likeProduct: likeMutation,
   },
 });
 
