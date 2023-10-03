@@ -22,6 +22,7 @@ const RootMutation = new GraphQLObjectType({
   fields: {
     addBlogComment: addComment,
     addCourseComment: addComment,
+    addProductComment: addComment,
   },
 });
 

@@ -1,34 +1,10 @@
-const { checkExistence } = require("../utils");
-const { courseModel } = require("../../models/course.model");
+const { checkExistence, returnUpdate } = require("../utils");
 const createEror = require("http-errors");
 const { responseType } = require("../types/public.types");
 const { GraphQLString } = require("graphql");
 const {
   graphUserPermission,
 } = require("../../http/middlewares/isUserPermitted");
-
-function returnUpdate(model, id, data) {
-  switch (model) {
-    case "blog": {
-      return blogModel.updateOne({ _id: id }, { $push: { comments: data } });
-    }
-    case "blogParent": {
-      return blogModel.updateOne(
-        { "comments._id": id },
-        { $push: { "comments.$.replies": data } }
-      );
-    }
-    case "course": {
-      return courseModel.updateOne({ _id: id }, { $push: { comments: data } });
-    }
-    case "courseParent": {
-      return courseModel.updateOne(
-        { "comments._id": id },
-        { $push: { "comments.$.replies": data } }
-      );
-    }
-  }
-}
 
 const addComment = {
   type: responseType,
@@ -46,7 +22,7 @@ const addComment = {
     }
     const existence = await checkExistence(model, Id);
     if (!existence) {
-      throw createEror.NotFound("not found blog");
+      throw createEror.NotFound("not found item");
     }
     const data = {
       comment,
