@@ -1,5 +1,6 @@
 const { GraphQLObjectType, GraphQLSchema } = require("graphql");
-const { blogResolver, addComment } = require("./resolvers/blog.resolver");
+const { blogResolver } = require("./resolvers/blog.resolver");
+const { addComment } = require("./mutations/comment.mutation");
 const {
   categoriesResolver,
   categoriesChildrenResolver,
@@ -20,6 +21,7 @@ const RootMutation = new GraphQLObjectType({
   name: "RootMutation",
   fields: {
     addBlogComment: addComment,
+    addCourseComment: addComment,
   },
 });
 
