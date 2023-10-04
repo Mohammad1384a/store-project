@@ -46,4 +46,5 @@ module.exports = {
   authorType,
   responseType,
   publicCategoryType,
+  anyType,
 };

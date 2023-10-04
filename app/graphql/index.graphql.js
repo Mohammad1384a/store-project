@@ -1,4 +1,5 @@
 const { GraphQLObjectType, GraphQLSchema } = require("graphql");
+const { getUserItems } = require("./resolvers/userItems.resolver");
 const { bookmarkMutation } = require("./mutations/bookmark.mutation");
 const { likeMutation } = require("./mutations/like.mutation");
 const { blogResolver } = require("./resolvers/blog.resolver");
@@ -16,6 +17,8 @@ const RootQuery = new GraphQLObjectType({
     categories: categoriesResolver,
     categoriesChildren: categoriesChildrenResolver,
     products: productResolver,
+    // return the courses products and blogs that user have bookmarked or liked
+    getUserItems: getUserItems,
   },
 });
 
