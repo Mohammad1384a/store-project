@@ -23,6 +23,21 @@ const CommentSchema = new mongoose.Schema(
   }
 );
 
+const ProductSchema = new mongoose.Schema({
+  productId: { type: mongoose.Types.ObjectId, ref: "product", required: true },
+  count: { type: Number, default: 1 },
+});
+
+const CourseSchema = new mongoose.Schema({
+  courseId: { type: mongoose.Types.ObjectId, ref: "course", required: true },
+});
+
+const BasketSchema = new mongoose.Schema({
+  courses: { type: [CourseSchema], default: [] },
+  products: { type: [ProductSchema], default: [] },
+});
+
 module.exports = {
   CommentSchema,
+  BasketSchema,
 };

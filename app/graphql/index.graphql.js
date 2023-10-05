@@ -9,6 +9,7 @@ const {
   categoriesChildrenResolver,
 } = require("./resolvers/categories.resolver");
 const { productResolver } = require("./resolvers/product.resolver");
+const { basketMutation } = require("./mutations/basket.mutation");
 
 const RootQuery = new GraphQLObjectType({
   name: "RootQuery",
@@ -34,6 +35,7 @@ const RootMutation = new GraphQLObjectType({
     bookmarkBlog: bookmarkMutation,
     bookmarkCourse: bookmarkMutation,
     bookmarkProduct: bookmarkMutation,
+    updateBasket: basketMutation,
   },
 });
 
