@@ -24,12 +24,22 @@ const CommentSchema = new mongoose.Schema(
 );
 
 const ProductSchema = new mongoose.Schema({
-  productId: { type: mongoose.Types.ObjectId, ref: "product", required: true },
-  count: { type: Number, default: 1 },
+  productId: { type: mongoose.Types.ObjectId, required: true },
+  title: { type: String, required: true },
+  images: { type: [String], required: true },
+  vendor: { type: mongoose.Types.ObjectId, required: true },
+  count: { type: Number, default: 0 },
+  price: { type: Number, required: true },
+  discount: { type: Number, required: true },
 });
 
 const CourseSchema = new mongoose.Schema({
-  courseId: { type: mongoose.Types.ObjectId, ref: "course", required: true },
+  courseId: { type: mongoose.Types.ObjectId, required: true },
+  title: { type: String, required: true },
+  image: { type: String, required: true },
+  total_time: { type: String, required: true },
+  price: { type: Number, required: true },
+  discount: { type: Number, required: true },
 });
 
 const BasketSchema = new mongoose.Schema({

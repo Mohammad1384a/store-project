@@ -35,7 +35,12 @@ const basketMutation = {
           throw createEror.BadRequest("you cannot have duplicated course");
         }
         const data = {
-          courseId: course._id,
+          courseId: course["_id"],
+          title: course["title"],
+          price: course["price"],
+          discount: course["discount"],
+          image: course["image"],
+          total_time: course["total_time"],
         };
         const updateBasket = await userModel.updateOne(
           { _id: user._id },
@@ -65,18 +70,27 @@ const basketMutation = {
         const index = user.basket?.products?.findIndex((p) =>
           p.productId?.equals(product._id)
         );
-        const productsLength = user.basket?.products?.[index]?.count;
+        const productsLength = user.basket?.products?.[index]?.count || 0;
         if (productsLength + quentity > 20 && index >= 0) {
           throw createEror.BadRequest(
             "you cannot have more than 20 of each product you already have " +
               productsLength
           );
         }
+        const data = {
+          productId: product["_id"],
+          title: product["title"],
+          price: product["price"],
+          discount: product["discount"],
+          images: product["images"],
+          vendor: product["vendor"],
+          count: Math.floor(productsLength + quentity),
+        };
         const query = {};
         index >= 0
           ? (query["$inc"] = { "basket.products.$.count": quentity })
           : (query["$push"] = {
-              "basket.products": { productId: product._id, count: quentity },
+              "basket.products": data,
             });
         const updateBasket = await userModel.updateOne(
           query["$push"]

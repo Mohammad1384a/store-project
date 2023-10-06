@@ -10,6 +10,10 @@ const {
 } = require("./resolvers/categories.resolver");
 const { productResolver } = require("./resolvers/product.resolver");
 const { basketMutation } = require("./mutations/basket.mutation");
+const {
+  basketResolver,
+  calcBasketPrice,
+} = require("./resolvers/basket.resolver");
 
 const RootQuery = new GraphQLObjectType({
   name: "RootQuery",
@@ -20,6 +24,8 @@ const RootQuery = new GraphQLObjectType({
     products: productResolver,
     // return the courses products and blogs that user have bookmarked or liked
     getUserItems: getUserItems,
+    getUserBasket: basketResolver,
+    calcBasketPrice: calcBasketPrice,
   },
 });
 
