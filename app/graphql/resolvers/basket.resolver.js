@@ -94,4 +94,5 @@ const calcBasketPrice = {
 module.exports = {
   basketResolver,
   calcBasketPrice,
+  calculateItemsPrice,
 };

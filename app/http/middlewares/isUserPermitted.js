@@ -8,7 +8,7 @@ function isUserPermitted(validPermissions = []) {
       return next(createError.BadRequest("no permission sent for the route"));
     }
     try {
-      const headers = req.headers;
+      const headers = req?.headers;
       const [bearer, token] = headers?.authorization?.split(" ");
       if (!token || !bearer || bearer.toLowerCase() !== "bearer") {
         throw createError.BadRequest("please enter a valid token");
@@ -25,6 +25,7 @@ function isUserPermitted(validPermissions = []) {
         if (!user) {
           throw createError.Unauthorized("not found user");
         }
+        req.user = user;
         if (user.roles?.includes("ADMIN")) return next();
         const inclusion = validPermissions?.find((permission) =>
           user.roles?.includes(permission)

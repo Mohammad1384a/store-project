@@ -20,6 +20,7 @@ const Schema = new mongoose.Schema(
     discount: { type: Number, default: 0 },
     birthday: { type: String },
     courses: { type: [mongoose.Types.ObjectId], ref: "courses", default: [] },
+    products: { type: [mongoose.Types.ObjectId], ref: "product", default: [] },
     token: { type: String, default: "" },
     refreshToken: { type: String, default: "" },
     roles: { type: [], default: ["USER"] },
