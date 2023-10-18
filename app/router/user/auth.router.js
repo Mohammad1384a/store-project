@@ -10,7 +10,6 @@ router.post("/otp", authValidator(), validationMapper, AuthController.getOTP);
 router.post(
   "/login",
   authValidator(),
-  isUserPermitted(["USER"]),
   validationMapper,
   AuthController.validateOTP
 );

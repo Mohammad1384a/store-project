@@ -58,11 +58,16 @@ class AuthController extends Controller {
         );
       }
       const now = new Date().getTime();
-      if (user.otp.expiresIn < now) {
+      if (user?.otp?.expiresIn < now) {
         return next(createError.Unauthorized("session expired"));
       }
-      const userId = user._id.toString();
+      const userId = user?._id?.toString();
       const refreshToken = await generateRefreshToken(phone, userId);
+      if (!refreshToken) {
+        return next(
+          createError.InternalServerError("creating refresh token failed")
+        );
+      }
       return res.status(200).json({
         status: 200,
         user,

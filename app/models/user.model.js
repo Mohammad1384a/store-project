@@ -24,7 +24,7 @@ const Schema = new mongoose.Schema(
     token: { type: String, default: "" },
     refreshToken: { type: String, default: "" },
     roles: { type: [], default: ["USER"] },
-    basket: { type: BasketSchema, default: [] },
+    basket: { type: BasketSchema, default: {} },
   },
   { timestamps: true, toJSON: { virtuals: true } }
 );

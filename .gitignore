@@ -1,3 +1,6 @@
 /node_modules
 /public
 .env
+/winkasb-store/node_modules
+/winkasb-store/.next
+/winkasb-store/next.config.js

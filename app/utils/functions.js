@@ -28,10 +28,10 @@ async function generateRefreshToken(payload, key) {
     algorithm: "HS512",
     expiresIn: "30d",
   });
-  const result = await writeRedis(key, refreshToken);
-  if (!result) {
-    throw createError.InternalServerError("saving refresh token failed");
-  }
+  // const result = await writeRedis(key, refreshToken);
+  // if (!result) {
+  //   throw createError.InternalServerError("saving refresh token failed");
+  // }
   return refreshToken;
 }
 
