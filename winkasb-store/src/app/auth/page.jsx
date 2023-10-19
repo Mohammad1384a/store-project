@@ -5,6 +5,7 @@ import { Fragment, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import http from "@/app/axios-instances";
 import { useMutation } from "@tanstack/react-query";
+import { useRouter } from "next/navigation";
 
 function AuthPage() {
   const [phone, setPhone] = useState("");
@@ -12,6 +13,8 @@ function AuthPage() {
   const [step, setStep] = useState(1);
   const [user, setUser] = useState(null);
   const [timer, setTimer] = useState(0);
+  const router = useRouter();
+
   async function HandleLogin(event) {
     event?.preventDefault();
     const type = Number(phone);
@@ -41,6 +44,7 @@ function AuthPage() {
       });
       data?.status === 200 && toast.success("you are logged in successfully");
       setUser(data?.user);
+      router.push("/complete-profile");
     } catch (error) {
       toast.error(error?.response?.data?.message ?? error?.message ?? error);
     }

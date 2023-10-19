@@ -95,3 +95,65 @@
 .loginForm .backIcon {
   font-size: large;
 }
+
+/*complete profile*/
+
+.completeProfile {
+  background-color: #e3e3e387;
+  width: 60%;
+  display: flex;
+  justify-content: space-around;
+  align-items: center;
+  padding: 2vh 0;
+  border-radius: 5vh;
+  margin: 14vh auto 0 auto;
+  height: 56vh;
+}
+
+.completeProfile div {
+  display: flex;
+  flex-direction: column;
+  width: 40%;
+  align-items: center;
+  height: 90%;
+  justify-content: space-between;
+}
+
+.completeProfile section {
+  display: flex;
+  width: 90%;
+  height: 20%;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.completeProfile input {
+  width: 60%;
+  padding: 1vh 2vh;
+  border: none;
+  background-color: #ffffff;
+  font-size: large;
+  border-radius: 1rem;
+}
+
+.completeProfile input:focus {
+  outline: none;
+  border: 1px solid #2563eb;
+}
+
+.completeProfile button {
+  background-color: #2563eb;
+  border: none;
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: large;
+  cursor: pointer;
+  width: 40%;
+  padding: 1vh 0;
+}
+
+.completeProfile button:disabled {
+  background-color: gray;
+  cursor: not-allowed;
+}
