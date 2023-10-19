@@ -11,6 +11,7 @@ function AuthPage() {
   const [otp, setOTP] = useState("");
   const [step, setStep] = useState(1);
   const [user, setUser] = useState(null);
+  const [timer, setTimer] = useState(0);
   async function HandleLogin(event) {
     event?.preventDefault();
     const type = Number(phone);
@@ -44,8 +45,11 @@ function AuthPage() {
       toast.error(error?.response?.data?.message ?? error?.message ?? error);
     }
   }
-  const mutation = useMutation({
-    mutationFn: step === 1 ? HandleLogin : ValidateOTP,
+  const phoneMutation = useMutation({
+    mutationFn: HandleLogin,
+  });
+  const otpMutation = useMutation({
+    mutationFn: ValidateOTP,
   });
   return (
     <Fragment>
@@ -54,15 +58,19 @@ function AuthPage() {
         <LoginPage
           phone={phone}
           setPhone={setPhone}
-          mutate={mutation.mutateAsync}
-          loading={mutation.isLoading}
+          mutate={phoneMutation.mutateAsync}
+          loading={phoneMutation.isLoading}
         />
       ) : (
         <CheckOTP
           otp={otp}
           setOTP={setOTP}
-          mutate={mutation.mutateAsync}
-          loading={mutation.isLoading}
+          mutate={otpMutation.mutateAsync}
+          loading={otpMutation.isLoading}
+          timer={timer}
+          setTimer={setTimer}
+          getOTP={phoneMutation.mutate}
+          setStep={setStep}
         />
       )}
     </Fragment>

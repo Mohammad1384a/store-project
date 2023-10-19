@@ -25,10 +25,9 @@
 }
 
 .loginForm section {
-  width: 60%;
+  width: 45%;
   display: flex;
-  flex-direction: column;
-  justify-content: space-between;
+  justify-content: space-around;
   height: 28%;
   align-items: center;
 }
@@ -54,7 +53,7 @@
 }
 
 .loginForm input {
-  width: 80%;
+  width: 60%;
   padding: 1vh 2vh;
   border: none;
   background-color: #ffffff;
@@ -65,4 +64,34 @@
 .loginForm input:focus {
   outline: none;
   border: 1px solid #2563eb;
+}
+
+.loginForm a {
+  cursor: pointer;
+  font-size: larger;
+}
+
+.loginForm .resend {
+  display: flex;
+  justify-content: space-between;
+  width: 60%;
+  align-self: flex-start;
+}
+
+.loginForm .timerGoing {
+  display: flex;
+  justify-content: space-between;
+  width: 70%;
+  align-self: flex-start;
+}
+
+.loginForm span {
+  cursor: pointer;
+  display: flex;
+  align-items: center;
+  margin-left: 1vw;
+}
+
+.loginForm .backIcon {
+  font-size: large;
 }

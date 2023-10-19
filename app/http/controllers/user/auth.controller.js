@@ -14,7 +14,7 @@ class AuthController extends Controller {
       const code = randomNumber().toString();
       const otp = {
         code,
-        expiresIn: new Date().getTime() + 1200000,
+        expiresIn: new Date().getTime() + 120000,
       };
       const token = await generateToken(phone);
       if (!user) {
