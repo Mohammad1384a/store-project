@@ -137,6 +137,28 @@
   border-radius: 1rem;
 }
 
+.completeProfile span {
+  display: flex;
+  justify-content: center;
+}
+
+.completeProfile .passwordInput {
+  position: relative;
+  width: 85%;
+}
+.completeProfile .eyeIcon {
+  position: absolute;
+  z-index: 1;
+  cursor: pointer;
+  margin-right: -11vw;
+  font-size: larger;
+  align-self: center;
+}
+
+.completeProfile input::before {
+  color: #2563eb;
+}
+
 .completeProfile input:focus {
   outline: none;
   border: 1px solid #2563eb;

@@ -27,6 +27,7 @@ function editUserValidator() {
       .withMessage("please enter a valid date format"),
     body("password")
       .optional()
+      .isString()
       .matches("^(?=.*[A-Za-z])(?=.*d)[A-Za-zd]{8,}$")
       .withMessage(
         "password must be at least eight characters, one letter and one number"

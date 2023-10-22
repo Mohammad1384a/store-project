@@ -8,10 +8,8 @@ function validationMapper(req, res, next) {
     result.errors.forEach((e) => {
       messages[e.path] = e.msg ?? e.value;
     });
-    createError.InternalServerError(messages);
-    return res.status(400).json({
-      status: 400,
-      messages,
+    Object.keys(messages).forEach((message) => {
+      return next(createError.BadRequest(messages[message]));
     });
   }
   return next();

@@ -11,8 +11,7 @@ function AuthPage() {
   const [phone, setPhone] = useState("");
   const [otp, setOTP] = useState("");
   const [step, setStep] = useState(1);
-  const [user, setUser] = useState(null);
-  const [timer, setTimer] = useState(0);
+  const [timer, setTimer] = useState(90);
   const router = useRouter();
 
   async function HandleLogin(event) {
@@ -43,8 +42,16 @@ function AuthPage() {
         code: otp,
       });
       data?.status === 200 && toast.success("you are logged in successfully");
-      setUser(data?.user);
-      router.push("/complete-profile");
+      localStorage.setItem(
+        "user",
+        JSON.stringify({
+          _id: data?.user?._id || "",
+          token: data?.user?.token || "",
+        })
+      );
+      return data?.user.email && data?.user.first_name
+        ? router.replace("/")
+        : router.push("/complete-profile");
     } catch (error) {
       toast.error(error?.response?.data?.message ?? error?.message ?? error);
     }

@@ -44,6 +44,7 @@ class UserController extends Controller {
         "username",
         "birthday",
         "email",
+        "password",
       ];
       Object.keys(data).forEach((key) => {
         if (!validItems.includes(key)) {
@@ -62,6 +63,14 @@ class UserController extends Controller {
         update,
       });
     } catch (error) {
+      if (error.code === 11000) {
+        console.log(error);
+        next(
+          createError.BadRequest(
+            "Phone number or username are already chosen try another one"
+          )
+        );
+      }
       next(createError.InternalServerError(error.message ?? error));
     }
   }

@@ -8,6 +8,7 @@ const {
 } = require("../../http/validators/user/editUser.validator");
 const router = Router();
 const { isUserPermitted } = require("../../http/middlewares/isUserPermitted");
+const { validationMapper } = require("../../http/validators/validationMapper");
 
 router.use("/auth", authRouter);
 router.use("/role", isUserPermitted(["ADMIN"]), roleRouter);
@@ -16,6 +17,7 @@ router.put(
   "/edit/:id",
   validateId(),
   editUserValidator(),
+  validationMapper,
   UserController.editUser
 );
 
@@ -23,6 +25,7 @@ router.get(
   "/:id",
   isUserPermitted(["ADMIN"]),
   validateId(),
+  validationMapper,
   UserController.getUserById
 );
 

@@ -12,7 +12,11 @@ function Header() {
           <Link href="/products">Products</Link>
         </li>
         <li>
-          <Link href="/auth">Login/SignUp</Link>
+          {isUserLoggedIn ? (
+            <Link href="/profile">Profile</Link>
+          ) : (
+            <Link href="/auth">Login/SignUp</Link>
+          )}
         </li>
       </ul>
     </header>
