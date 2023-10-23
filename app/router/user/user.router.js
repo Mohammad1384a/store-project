@@ -23,7 +23,7 @@ router.put(
 
 router.get(
   "/:id",
-  isUserPermitted(["ADMIN"]),
+  isUserPermitted(["USER"]),
   validateId(),
   validationMapper,
   UserController.getUserById

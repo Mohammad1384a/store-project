@@ -1,20 +1,17 @@
 "use client";
-import { useEffect, useState } from "react";
+import { useState } from "react";
 import styles from "../page.module.css";
 import { useMutation } from "@tanstack/react-query";
 import http from "../axios-instances";
 import { useRouter } from "next/navigation";
 import { Toaster, toast } from "react-hot-toast";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";
+import { useCookies } from "react-cookie";
 
 function CompleteProfile() {
-  const [user, setUser] = useState(null);
+  const [isUserLoggedIn] = useCookies(["user"]);
   const [isInputVisible, setInput] = useState(false);
   const router = useRouter();
-  useEffect(() => {
-    const isUserLoggedIn = localStorage.getItem("user");
-    isUserLoggedIn ? setUser(JSON.parse(isUserLoggedIn)) : router.push("/auth");
-  }, []);
   const [info, setInfo] = useState({
     first_name: "",
     last_name: "",
@@ -39,10 +36,10 @@ function CompleteProfile() {
           return toast.error("invalid key sent for " + key);
         }
       });
-      const { data } = await http.put(`user/edit/${user._id}`, rest, {
-        params: { id: user._id },
+      await http.put(`user/edit/${isUserLoggedIn?.user?._id}`, rest, {
+        params: { id: isUserLoggedIn?.user?._id },
       });
-      return console.log(data);
+      return router.push("/");
     } catch (error) {
       toast.error(error?.response?.data?.message ?? error?.message ?? error);
     }

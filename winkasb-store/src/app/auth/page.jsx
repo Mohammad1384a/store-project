@@ -6,6 +6,7 @@ import toast, { Toaster } from "react-hot-toast";
 import http from "@/app/axios-instances";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
+import { useCookies } from "react-cookie";
 
 function AuthPage() {
   const [phone, setPhone] = useState("");
@@ -13,6 +14,7 @@ function AuthPage() {
   const [step, setStep] = useState(1);
   const [timer, setTimer] = useState(90);
   const router = useRouter();
+  const [userCookie, setUserCookie] = useCookies(["user"]);
 
   async function HandleLogin(event) {
     event?.preventDefault();
@@ -42,15 +44,17 @@ function AuthPage() {
         code: otp,
       });
       data?.status === 200 && toast.success("you are logged in successfully");
-      localStorage.setItem(
+      // cookie expires in a week
+      setUserCookie(
         "user",
-        JSON.stringify({
+        {
           _id: data?.user?._id || "",
           token: data?.user?.token || "",
-        })
+        },
+        { maxAge: 604800 }
       );
       return data?.user.email && data?.user.first_name
-        ? router.replace("/")
+        ? router.push("/")
         : router.push("/complete-profile");
     } catch (error) {
       toast.error(error?.response?.data?.message ?? error?.message ?? error);
