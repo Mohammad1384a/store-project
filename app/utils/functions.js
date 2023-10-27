@@ -10,7 +10,8 @@ function randomNumber() {
 function generateToken(payload) {
   return jwt.sign({ payload }, process.env.SECRET_KEY, {
     algorithm: "HS512",
-    expiresIn: "1h",
+    // expiresIn: "7d",
+    expiresIn: "30s",
   });
 }
 async function writeRedis(id, value) {
@@ -26,7 +27,7 @@ async function writeRedis(id, value) {
 async function generateRefreshToken(payload, key) {
   const refreshToken = jwt.sign({ payload }, process.env.REFRESH_SECRET, {
     algorithm: "HS512",
-    expiresIn: "30d",
+    expiresIn: Math.floor(60 * 60 * 24 * 20),
   });
   // const result = await writeRedis(key, refreshToken);
   // if (!result) {

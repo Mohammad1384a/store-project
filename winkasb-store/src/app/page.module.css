@@ -1,9 +1,15 @@
 /* header styles*/
+.blurHeader {
+  opacity: 0.4;
+  filter: blur(6px);
+}
+
 .headerList {
   list-style-type: none;
   background-color: #ffffffe6;
   display: flex;
   justify-content: space-around;
+  position: sticky;
   height: 10vh;
   align-items: center;
   box-shadow: 0 8px 6px -6px black;

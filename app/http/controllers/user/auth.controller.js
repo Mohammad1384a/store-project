@@ -63,7 +63,7 @@ class AuthController extends Controller {
       }
       const userId = user?._id?.toString();
       const refreshToken = await generateRefreshToken(phone, userId);
-      if (!refreshToken) {
+      if (!refreshToken || refreshToken?.lenght === 0) {
         return next(
           createError.InternalServerError("creating refresh token failed")
         );
@@ -85,8 +85,7 @@ class AuthController extends Controller {
       if (!user) {
         return next(createError.BadRequest("not found user"));
       }
-      const userId = user._id.toString();
-      const newToken = await generateRefreshToken(phone, userId);
+      const newToken = await generateToken(phone);
       if (!newToken) {
         return next(
           createError.InternalServerError("generating refresh token failed")
@@ -94,8 +93,7 @@ class AuthController extends Controller {
       }
       return res.status(200).json({
         status: 200,
-        refreshToken: newToken,
-        user,
+        token: newToken,
       });
     } catch (error) {
       next(createError.InternalServerError(error?.message ?? error));

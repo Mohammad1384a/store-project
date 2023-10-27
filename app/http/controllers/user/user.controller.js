@@ -64,14 +64,13 @@ class UserController extends Controller {
       });
     } catch (error) {
       if (error.code === 11000) {
-        console.log(error);
-        next(
+        return next(
           createError.BadRequest(
             "Phone number or username are already chosen try another one"
           )
         );
       }
-      next(createError.InternalServerError(error.message ?? error));
+      return next(createError.InternalServerError(error.message ?? error));
     }
   }
   async getUserById(req, res, next) {

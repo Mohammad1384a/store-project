@@ -1,12 +1,13 @@
 "use client";
 import LoginPage from "../components/login";
 import CheckOTP from "../components/check-otp";
-import { Fragment, useState } from "react";
+import { Fragment, useEffect, useMemo, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import http from "@/app/axios-instances";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useCookies } from "react-cookie";
+import { decode } from "jsonwebtoken";
 
 function AuthPage() {
   const [phone, setPhone] = useState("");
@@ -15,6 +16,55 @@ function AuthPage() {
   const [timer, setTimer] = useState(90);
   const router = useRouter();
   const [userCookie, setUserCookie] = useCookies(["user"]);
+  // async function UpdateToken() {
+  //   try {
+  //     const { data } = await http.post("user/auth/refresh-token", {
+  //       phone,
+  //       refreshToken: userCookie?.user?.refreshToken ?? "",
+  //     });
+  //     return data;
+  //   } catch (error) {
+  //     toast.error(error?.response?.data?.message ?? error?.message ?? error);
+  //   }
+  // }
+  // const tokenExp = decode(userCookie?.user?.token, { complete: true });
+  // const tokenExpired =
+  //   Date.now() >= Math.floor(tokenExp?.payload?.exp * 1000) ? false : true;
+  // console.log(tokenExpired);
+  // useMemo(async () => {
+  //   console.log(tokenExpired);
+  //   if (tokenExpired && userCookie?.user?.token?.length > 0) {
+  //     try {
+  //       const newToken = await UpdateToken();
+  //       return console.log(newToken);
+  //     } catch (error) {
+  //       toast.error(error?.response?.data?.message ?? error?.message ?? error);
+  //     }
+  //   }
+  // }, [tokenExpired]);
+  // const refreshTokenExp = decode(userCookie?.user?.refreshToken, {
+  //   complete: true,
+  // });
+  // const refrehTokenExpired =
+  //   Date.now() >= Math.floor(refreshTokenExp?.payload?.exp * 1000)
+  //     ? false
+  //     : true;
+  // useMemo(() => {
+  //   if (!refrehTokenExpired) {
+  //     const { refreshToken, ...newCookie } = userCookie;
+  //     setUserCookie("user", newCookie, {
+  //       maxAge: Math.floor(60 * 60 * 24 * 20),
+  //       sameSite: "strict",
+  //       path: "/",
+  //     });
+  //   } else {
+  //     removeUserCookie("user", {
+  //       maxAge: Math.floor(60 * 60 * 24 * 20),
+  //       sameSite: "strict",
+  //       path: "/",
+  //     });
+  //   }
+  // }, [refrehTokenExpired]);
 
   async function HandleLogin(event) {
     event?.preventDefault();
@@ -44,14 +94,20 @@ function AuthPage() {
         code: otp,
       });
       data?.status === 200 && toast.success("you are logged in successfully");
-      // cookie expires in a week
+      // cookie expires after 20 days
       setUserCookie(
         "user",
         {
           _id: data?.user?._id || "",
           token: data?.user?.token || "",
+          refreshToken: data?.refreshToken || "",
+          phone: phone || "",
         },
-        { maxAge: 604800 }
+        {
+          maxAge: Math.floor(60 * 60 * 24 * 20),
+          sameSite: "strict",
+          path: "/",
+        }
       );
       return data?.user.email && data?.user.first_name
         ? router.push("/")
