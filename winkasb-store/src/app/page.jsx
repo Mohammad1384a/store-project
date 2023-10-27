@@ -47,29 +47,26 @@ function Home() {
       getNewAccessToken();
     }
   }, [tokenExpired]);
-  // const refreshTokenExp = decode(userCookie?.user?.refreshToken, {
-  //   complete: true,
-  // });
-  // const refrehTokenExpired =
-  //   Date.now() >= Math.floor(refreshTokenExp?.payload?.exp * 1000)
-  //     ? false
-  //     : true;
-  // useEffect(() => {
-  //   if (!refrehTokenExpired) {
-  //     const { refreshToken, ...newCookie } = userCookie;
-  //     setUserCookie("user", newCookie, {
-  //       maxAge: Math.floor(60 * 60 * 24 * 20),
-  //       sameSite: "strict",
-  //       path: "/",
-  //     });
-  //   } else {
-  //     removeUserCookie("user", {
-  //       maxAge: Math.floor(60 * 60 * 24 * 20),
-  //       sameSite: "strict",
-  //       path: "/",
-  //     });
-  //   }
-  // }, [refrehTokenExpired]);
+  const refreshTokenExp = decode(userCookie?.user?.refreshToken, {
+    complete: true,
+  });
+  const [refreshTokenExpired, setRefreshTokenExpiration] = useState(
+    Date.now() >= Math.floor(refreshTokenExp?.payload?.exp * 1000)
+      ? true
+      : false
+  );
+  const timeToExpireRefreshToken =
+    Math.floor(refreshTokenExp?.payload?.exp * 1000 - Date.now()) || 0;
+  if (!refreshTokenExpired && timeToExpireRefreshToken > 0) {
+    setTimeout(() => {
+      setRefreshTokenExpiration(true);
+    }, timeToExpire);
+  }
+  useEffect(() => {
+    if (refreshTokenExpired && userCookie?.user?.refreshToken?.length > 0) {
+      removeUserCookie("user");
+    }
+  }, [refreshTokenExpired]);
   return (
     <div>
       <Toaster />

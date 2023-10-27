@@ -2,10 +2,12 @@
 import styles from "./page.module.css";
 import Link from "next/link";
 import { useCookies } from "react-cookie";
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 
 function Header() {
   const [isUserLoggedIn] = useCookies(["user"]);
+  const refreshToken = isUserLoggedIn?.user?.refreshToken;
+  console.log(isUserLoggedIn);
   const [user, setUser] = useState(null);
   const [isHeaderBlur, setHeaderBlur] = useState("blur");
   useEffect(() => {
@@ -14,8 +16,8 @@ function Header() {
     }, 1000);
   }, []);
   useEffect(() => {
-    setUser(isUserLoggedIn?.user?.refreshToken ?? null);
-  }, [isUserLoggedIn?.user?.refreshToken]);
+    refreshToken?.length > 0 ? setUser(true) : setUser(null);
+  }, [refreshToken]);
   return (
     <header className={isHeaderBlur === "blur" ? styles.blurHeader : ""}>
       <ul className={styles.headerList}>

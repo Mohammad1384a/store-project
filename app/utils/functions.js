@@ -11,7 +11,7 @@ function generateToken(payload) {
   return jwt.sign({ payload }, process.env.SECRET_KEY, {
     algorithm: "HS512",
     // expiresIn: "7d",
-    expiresIn: "30s",
+    expiresIn: "7d",
   });
 }
 async function writeRedis(id, value) {
