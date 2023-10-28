@@ -27,6 +27,9 @@ function Header() {
           <Link href="/products">Products</Link>
         </li>
         <li>
+          <Link href="/admin">Admin Panel</Link>
+        </li>
+        <li>
           {user ? (
             <Link href="/profile">Profile</Link>
           ) : (

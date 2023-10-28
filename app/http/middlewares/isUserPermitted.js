@@ -11,7 +11,7 @@ function isUserPermitted(validPermissions = []) {
       const headers = req?.headers;
       const [bearer, token] = headers?.authorization?.split(" ");
       if (!token || !bearer || bearer.toLowerCase() !== "bearer") {
-        throw createError.BadRequest("please enter a valid token");
+        return next(createError.BadRequest("please enter a valid token"));
       }
       return jwt.verify(token, process.env.SECRET_KEY, async (err, payload) => {
         if (err) {
@@ -23,7 +23,7 @@ function isUserPermitted(validPermissions = []) {
           { password: 0, otp: 0 }
         );
         if (!user) {
-          throw createError.Unauthorized("not found user");
+          return next(createError.Unauthorized("not found user"));
         }
         req.user = user;
         if (user.roles?.includes("ADMIN")) return next();
