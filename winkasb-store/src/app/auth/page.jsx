@@ -43,7 +43,6 @@ function AuthPage() {
         phone,
         code: otp,
       });
-      data?.status === 200 && toast.success("you are logged in successfully");
       // cookie expires after 20 days
       await setUserCookie(
         "user",
@@ -59,9 +58,10 @@ function AuthPage() {
           path: "/",
         }
       );
-      return data?.user.email && data?.user.first_name
-        ? router.push("/")
-        : router.push("/complete-profile");
+      data?.status === 200 && toast.success("you are logged in successfully");
+      return router.push(
+        data?.user.email && data?.user.first_name ? "/" : "/complete-profile"
+      );
     } catch (error) {
       toast.error(error?.response?.data?.message ?? error?.message ?? error);
     }

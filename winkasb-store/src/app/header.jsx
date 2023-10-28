@@ -7,7 +7,6 @@ import { useEffect, useState } from "react";
 function Header() {
   const [isUserLoggedIn] = useCookies(["user"]);
   const refreshToken = isUserLoggedIn?.user?.refreshToken;
-  console.log(isUserLoggedIn);
   const [user, setUser] = useState(null);
   const [isHeaderBlur, setHeaderBlur] = useState("blur");
   useEffect(() => {
