@@ -1,6 +1,6 @@
 "use client";
-import LoginPage from "../components/login";
-import CheckOTP from "../components/check-otp";
+import LoginPage from "../../components/login";
+import CheckOTP from "../../components/check-otp";
 import { Fragment, useEffect, useMemo, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import http from "@/app/axios-instances";

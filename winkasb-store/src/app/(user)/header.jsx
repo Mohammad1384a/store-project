@@ -1,5 +1,5 @@
 "use client";
-import styles from "./page.module.css";
+import styles from "./user.module.css";
 import Link from "next/link";
 import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";

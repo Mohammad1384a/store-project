@@ -1,4 +1,4 @@
-import styles from "../page.module.css";
+import styles from "../(user)/user.module.css";
 
 function LoginPage({ phone, setPhone, mutate, loading }) {
   return (

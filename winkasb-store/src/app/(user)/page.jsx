@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useCookies } from "react-cookie";
 import { decode } from "jsonwebtoken";
-import http from "./axios-instances";
+import http from "../axios-instances";
 import { toast, Toaster } from "react-hot-toast";
 
 function Home() {

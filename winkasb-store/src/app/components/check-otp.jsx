@@ -1,5 +1,5 @@
 import { useEffect } from "react";
-import styles from "../page.module.css";
+import styles from "../(user)/user.module.css";
 import { IoIosArrowBack } from "react-icons/io";
 
 function CheckOTP({

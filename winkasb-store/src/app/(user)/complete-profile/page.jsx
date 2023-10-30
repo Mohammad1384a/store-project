@@ -2,7 +2,7 @@
 import { useState } from "react";
 import styles from "../page.module.css";
 import { useMutation } from "@tanstack/react-query";
-import http from "../axios-instances";
+import http from "../../axios-instances";
 import { useRouter } from "next/navigation";
 import { Toaster, toast } from "react-hot-toast";
 import { AiOutlineEye, AiOutlineEyeInvisible } from "react-icons/ai";

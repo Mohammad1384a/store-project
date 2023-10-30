@@ -19,13 +19,12 @@ export async function middleware(request) {
       Authorization: `Bearer ${user?.token}`,
     },
   });
-  return await data
+  await data
     .json()
     .then(({ user }) => {
-      console.log(user);
       const inclusion = user.roles.includes("ADMIN");
       return NextResponse.redirect(
-        new URL(`${inclusion ? "/admin" : "/auth"}`, request.url)
+        new URL(inclusion ? "/admin" : "/auth", request.url)
       );
     })
     .catch((error) => {
