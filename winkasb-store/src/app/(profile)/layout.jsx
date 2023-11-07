@@ -4,6 +4,7 @@ import { Inter } from "next/font/google";
 import "../global.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
 import { CookiesProvider } from "react-cookie";
+import Header from "../(user)/header";
 
 const inter = Inter({ subsets: ["latin"] });
 
@@ -14,6 +15,7 @@ function RootLayout({ children }) {
       <body className={inter.className} suppressHydrationWarning>
         <CookiesProvider defaultSetOptions={{ path: "/" }}>
           <QueryClientProvider client={queryClient}>
+            <Header />
             {children}
           </QueryClientProvider>
         </CookiesProvider>

@@ -17,6 +17,7 @@ router.put(
   "/edit/:id",
   validateId(),
   editUserValidator(),
+  isUserPermitted(["USER"]),
   validationMapper,
   UserController.editUser
 );

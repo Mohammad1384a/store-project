@@ -1,0 +1,192 @@
+.profilePage {
+  width: 70%;
+  margin: 10vh auto 0 auto;
+  font-size: large;
+  display: grid;
+  grid-template-rows: 33% 33% 33%;
+  grid-template-columns: 50% 50%;
+  border-radius: 2rem;
+  border: 1px solid #81858b;
+}
+
+.profilePage section {
+  border: 1px solid #81858b;
+  background-color: #ffffff;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: 0 2vw;
+}
+
+.profilePage section:nth-child(6) {
+  border-bottom-right-radius: 2rem;
+}
+
+.profilePage section:nth-child(5) {
+  border-bottom-left-radius: 2rem;
+}
+
+.profilePage section:nth-child(1) {
+  border-top-left-radius: 2rem;
+}
+
+.profilePage section:nth-child(2) {
+  border-top-right-radius: 2rem;
+}
+
+.profilePage section > div {
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: flex-start;
+  padding-bottom: 1vh;
+  height: 70%;
+}
+
+.profilePage span {
+  color: #81858b;
+}
+
+.profileEditIcon {
+  font-size: larger;
+  cursor: pointer;
+}
+
+.editUserInfo {
+  width: 100%;
+  height: 100vh;
+  position: absolute;
+  top: 0;
+  font-size: large;
+  background-color: rgba(178, 178, 178, 60%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.editUserInfo > div {
+  width: 35%;
+  height: 48vh;
+  max-height: 50vh;
+  display: flex;
+  color: #1f2937;
+  padding: 3vh 1.5vw;
+  flex-direction: column;
+  justify-content: space-between;
+  align-items: center;
+  border-radius: 2rem;
+  background-color: #ffffff;
+}
+
+.editName {
+  display: flex;
+  justify-content: space-between;
+  height: 12vh;
+  flex-direction: column;
+  width: 90%;
+  align-items: center;
+}
+
+.editInfoHeader {
+  display: flex;
+  justify-content: space-between;
+  border-bottom: 1px solid #81858b;
+  align-items: center;
+  width: 90%;
+}
+
+.editUserInfo input {
+  width: 60%;
+  padding: 0.8vh 2vh;
+  border: 1px solid #81858b;
+  background-color: #ffffff;
+  font-size: large;
+  border-radius: 1rem;
+}
+
+.editUserInfo input:focus {
+  outline: none;
+  border: 2.5px solid #2563eb;
+}
+
+.editUserInfo button {
+  background-color: #2563eb;
+  border: none;
+  border-radius: 10px;
+  color: #ffffff;
+  font-size: large;
+  cursor: pointer;
+  width: 40%;
+  padding: 1vh 0;
+}
+
+.editUserInfo button:disabled {
+  background-color: gray;
+  cursor: not-allowed;
+}
+
+.invisibleEditing {
+  display: none;
+}
+
+.closeIcon {
+  cursor: pointer;
+}
+
+.loadingComponent {
+  margin-top: 25vh;
+  display: flex;
+  justify-content: center;
+}
+
+.editPassword {
+  width: 100%;
+  height: 23vh;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-between;
+}
+
+.editPassword section {
+  display: flex;
+  flex-direction: column;
+  height: 45%;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.profileOptionsContainer {
+  display: flex;
+  flex-direction: column;
+  cursor: pointer;
+  justify-content: space-between;
+}
+
+.visibleOptions {
+  position: absolute;
+  box-shadow: 2px 2px 2px 2px #81858b;
+  width: 12vw;
+  display: flex;
+  height: 18vh;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 1rem;
+  padding: 1vh 0.8vw;
+  align-items: center;
+  margin-left: -5vw;
+  margin-top: 7vh;
+  background-color: #ffffff;
+}
+
+.visibleOptions div:first-child {
+  border-bottom: 2px solid #d8d8d8;
+}
+
+.visibleOptions div {
+  display: flex;
+  width: 80%;
+  height: 50%;
+  font-size: large;
+  justify-content: space-between;
+  align-items: center;
+}

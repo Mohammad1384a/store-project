@@ -47,9 +47,10 @@ function Home() {
       getNewAccessToken();
     }
   }, [tokenExpired]);
-  const refreshTokenExp = decode(userCookie?.user?.refreshToken, {
-    complete: true,
-  });
+  const refreshTokenExp =
+    decode(userCookie?.user?.refreshToken, {
+      complete: true,
+    }) ?? false;
   const [refreshTokenExpired, setRefreshTokenExpiration] = useState(
     Date.now() >= Math.floor(refreshTokenExp?.payload?.exp * 1000)
       ? true

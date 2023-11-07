@@ -1,14 +1,17 @@
 "use client";
 import styles from "./user.module.css";
+import profileStyles from "../(profile)/profile.module.css";
 import Link from "next/link";
 import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
+import ProfileOptions from "../components/profile/profile-options";
 
 function Header() {
   const [isUserLoggedIn] = useCookies(["user"]);
   const refreshToken = isUserLoggedIn?.user?.refreshToken;
   const [user, setUser] = useState(null);
   const [isHeaderBlur, setHeaderBlur] = useState("blur");
+  const [optionsVisibility, setProfileOptions] = useState(false);
   useEffect(() => {
     setTimeout(() => {
       setHeaderBlur("notBlur");
@@ -31,7 +34,12 @@ function Header() {
         </li>
         <li>
           {user ? (
-            <Link href="/profile">Profile</Link>
+            <section className={profileStyles.profileOptionsContainer}>
+              <p onClick={() => setProfileOptions(!optionsVisibility)}>
+                Profile
+              </p>
+              <ProfileOptions visibility={optionsVisibility} />
+            </section>
           ) : (
             <Link href="/auth">Login/SignUp</Link>
           )}

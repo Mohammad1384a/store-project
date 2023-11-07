@@ -55,7 +55,7 @@ class UserController extends Controller {
         }
       });
       const update = await userModel.updateOne({ _id: userId }, { $set: data });
-      if (update.modifiedCount === 0) {
+      if (!update.modifiedCount) {
         return next(createError.InternalServerError("updating user failed"));
       }
       return res.status(200).json({
