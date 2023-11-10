@@ -36,7 +36,10 @@ function Header() {
         </li>
         <li className={profileStyles.profileOptionsContainer}>
           <p onClick={() => setLoginOptions(!adminLoginOptions)}>Admin Panel</p>
-          <AdminOptions visibility={adminLoginOptions} />
+          <AdminOptions
+            visibility={adminLoginOptions}
+            setVisibility={setLoginOptions}
+          />
         </li>
         {user ? (
           <li className={profileStyles.profileOptionsContainer}>

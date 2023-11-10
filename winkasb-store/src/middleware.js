@@ -5,39 +5,38 @@ export async function middleware(request) {
   if (!cookie) {
     return NextResponse.redirect(new URL("/auth", request.url));
   }
-  const user = {
+  const userInfo = {
     _id: JSON.parse(cookie)?._id || "",
     token: JSON.parse(cookie)?.token || "",
   };
-  if (!(user?.token?.length > 0) || !(user?._id?.length > 0)) {
+  if (!(userInfo?.token?.length > 0) || !(userInfo?._id?.length > 0)) {
     return NextResponse.redirect(new URL("/auth", request.url));
   }
-  const data = await fetch(`http://localhost:5000/user/${user?._id}`, {
-    method: "GET",
-    credentials: "include",
-    headers: {
-      Authorization: `Bearer ${user?.token}`,
-    },
-  });
-  await data
-    .json()
-    .then(({ user }) => {
-      const inclusion = user.roles.includes("ADMIN");
-      return NextResponse.redirect(
-        new URL(inclusion ? "/admin" : "/auth", request.url)
-      );
-    })
-    .catch((error) => {
-      return Response.json(
-        {
-          success: false,
-          message: error?.response?.data?.message ?? error?.message ?? error,
-        },
-        { status: error.status || 500 }
-      );
+  try {
+    const data = await fetch(`http://localhost:5000/user/${userInfo?._id}`, {
+      method: "GET",
+      credentials: "include",
+      headers: {
+        Authorization: `Bearer ${userInfo?.token}`,
+      },
     });
+    const { user } = await data.json();
+    const path = request.url?.split("/")?.[3];
+    const inclusion = user.roles?.includes(path.toUpperCase());
+    return NextResponse.rewrite(
+      new URL(inclusion ? `/${path}` : "/auth", request.url)
+    );
+  } catch (error) {
+    return NextResponse.rewrite(new URL("/auth", request.url));
+  }
 }
 
 export const config = {
-  matcher: ["/admin/:path*", "/profile"],
+  matcher: [
+    "/admin/:path*",
+    "/profile",
+    "/blogger/:path*",
+    "/teacher/:path*",
+    "/vendor/:path*",
+  ],
 };

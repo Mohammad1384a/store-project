@@ -14,7 +14,7 @@ router.use("/user", userRouter);
 router.use("/dev", devRouter);
 router.use(
   "/admin",
-  isUserPermitted(["TEACHER", "BLOG", "VENDOR"]),
+  isUserPermitted(["TEACHER", "BLOGGER", "VENDOR"]),
   adminRouter
 );
 
