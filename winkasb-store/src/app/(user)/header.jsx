@@ -5,6 +5,7 @@ import Link from "next/link";
 import { useCookies } from "react-cookie";
 import { useEffect, useState } from "react";
 import ProfileOptions from "../components/profile/profile-options";
+import AdminOptions from "../components/profile/admin-options";
 
 function Header() {
   const [isUserLoggedIn] = useCookies(["user"]);
@@ -12,14 +13,18 @@ function Header() {
   const [user, setUser] = useState(null);
   const [isHeaderBlur, setHeaderBlur] = useState("blur");
   const [optionsVisibility, setProfileOptions] = useState(false);
+  const [adminLoginOptions, setLoginOptions] = useState(false);
+
   useEffect(() => {
     setTimeout(() => {
       setHeaderBlur("notBlur");
     }, 1000);
   }, []);
+
   useEffect(() => {
     refreshToken?.length > 0 ? setUser(true) : setUser(null);
   }, [refreshToken]);
+
   return (
     <header className={isHeaderBlur === "blur" ? styles.blurHeader : ""}>
       <ul className={styles.headerList}>
@@ -29,21 +34,20 @@ function Header() {
         <li>
           <Link href="/products">Products</Link>
         </li>
-        <li>
-          <Link href="/admin">Admin Panel</Link>
+        <li className={profileStyles.profileOptionsContainer}>
+          <p onClick={() => setLoginOptions(!adminLoginOptions)}>Admin Panel</p>
+          <AdminOptions visibility={adminLoginOptions} />
         </li>
-        <li>
-          {user ? (
-            <section className={profileStyles.profileOptionsContainer}>
-              <p onClick={() => setProfileOptions(!optionsVisibility)}>
-                Profile
-              </p>
-              <ProfileOptions visibility={optionsVisibility} />
-            </section>
-          ) : (
+        {user ? (
+          <li className={profileStyles.profileOptionsContainer}>
+            <p onClick={() => setProfileOptions(!optionsVisibility)}>Profile</p>
+            <ProfileOptions visibility={optionsVisibility} />
+          </li>
+        ) : (
+          <li>
             <Link href="/auth">Login/SignUp</Link>
-          )}
-        </li>
+          </li>
+        )}
       </ul>
     </header>
   );

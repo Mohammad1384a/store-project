@@ -172,6 +172,7 @@
   justify-content: space-between;
   border-radius: 1rem;
   padding: 1vh 0.8vw;
+  z-index: 2;
   align-items: center;
   margin-left: -5vw;
   margin-top: 7vh;
@@ -189,4 +190,35 @@
   font-size: large;
   justify-content: space-between;
   align-items: center;
+}
+
+.visibleAdminOptions {
+  position: absolute;
+  box-shadow: 2px 2px 2px 2px #81858b;
+  width: 12vw;
+  display: flex;
+  z-index: 5;
+  height: 30vh;
+  flex-direction: column;
+  justify-content: space-between;
+  border-radius: 1rem;
+  padding: 2vh 0.8vw;
+  align-items: center;
+  margin-left: -4vw;
+  margin-top: 7vh;
+  background-color: #ffffff;
+}
+
+.visibleAdminOptions div {
+  display: flex;
+  width: 80%;
+  height: 50%;
+  font-size: large;
+  justify-content: space-between;
+  align-items: center;
+}
+
+.visibleAdminOptions div:nth-child(odd),
+.visibleAdminOptions div:nth-child(2) {
+  border-bottom: 2px solid #d8d8d8;
 }
