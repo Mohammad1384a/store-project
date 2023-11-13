@@ -30,6 +30,14 @@ router.get(
   UserController.getUserById
 );
 
+router.delete(
+  "/remove/:id",
+  isUserPermitted(["ADMIN"]),
+  validateId(),
+  validationMapper,
+  UserController.removeUserById
+);
+
 module.exports = {
   userRouter: router,
 };

@@ -6,7 +6,7 @@ class UserController extends Controller {
   async getUserList(req, res, next) {
     try {
       const { search } = req.query;
-      const users = await userModel.find({}, { __v: 0, _id: 0 });
+      const users = await userModel.find({}, { __v: 0 });
       if (users.length === 0) {
         return next(createError.NotFound("no users found"));
       }
@@ -83,6 +83,23 @@ class UserController extends Controller {
       return res.status(200).json({
         status: 200,
         user,
+      });
+    } catch (error) {
+      next(createError.InternalServerError(error.message ?? error));
+    }
+  }
+  async removeUserById(req, res, next) {
+    try {
+      const { id: _id } = req.params;
+      console.log(_id);
+      const deleteUser = await userModel.deleteOne({ _id });
+      console.log(deleteUser);
+      if (deleteUser.deletedCount === 0) {
+        return next(createError.InternalServerError("Deleting User failed"));
+      }
+      return res.status(200).json({
+        status: 200,
+        deleteUser,
       });
     } catch (error) {
       next(createError.InternalServerError(error.message ?? error));

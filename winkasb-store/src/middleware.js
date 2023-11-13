@@ -22,6 +22,7 @@ export async function middleware(request) {
     });
     const { user } = await data.json();
     const path = request.url?.split("/")?.[3];
+    if (path === "profile" && user) return;
     const inclusion = user.roles?.includes(path.toUpperCase());
     return NextResponse.rewrite(
       new URL(inclusion ? `/${path}` : "/auth", request.url)

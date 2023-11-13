@@ -1,0 +1,127 @@
+.adminPage {
+  font-size: large;
+  display: flex;
+  justify-content: space-between;
+  margin: 8vh auto 0 auto;
+  height: 100vh;
+}
+
+.adminPage > section {
+  width: 70%;
+  display: flex;
+  align-items: center;
+  height: 80%;
+  justify-content: start;
+  flex-direction: column;
+}
+
+.adminPage table {
+  box-shadow: 2px 2px 2px 2px #81858b;
+  text-align: center;
+  width: 90%;
+}
+
+.adminPage table,
+.adminPage th,
+.adminPage td {
+  border: 2px solid #64748b;
+  padding: 1vh;
+}
+
+.adminSidebar {
+  width: 25%;
+  height: 60%;
+  position: sticky;
+  left: 0;
+  top: 0;
+  display: flex;
+  margin: 0;
+  padding: 0;
+  flex-direction: column;
+  justify-content: space-between;
+  background-color: #64748b;
+  border-top-right-radius: 2rem;
+  border-bottom-right-radius: 2rem;
+  list-style-type: none;
+}
+
+.adminSidebar li {
+  height: 20%;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+}
+
+.adminSidebar li:last-child {
+  border-bottom-right-radius: 2rem;
+}
+
+.adminSidebar li:first-child {
+  border-top-right-radius: 2rem;
+}
+
+.adminSidebar li:hover {
+  background-color: #2563eb;
+  cursor: pointer;
+}
+
+.none {
+  display: none;
+}
+
+.deleteUser {
+  width: 100vw;
+  height: 100vh;
+  position: absolute;
+  left: 0;
+  top: 0;
+  font-size: large;
+  background-color: rgba(178, 178, 178, 60%);
+  display: flex;
+  align-items: center;
+  justify-content: center;
+}
+
+.deleteUser div {
+  background-color: #ffff;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  border-radius: 2rem;
+  align-items: center;
+  width: 30%;
+  padding: 2vh 0;
+  height: 25vh;
+}
+
+.deleteUser div > section {
+  width: 40%;
+  display: flex;
+  justify-content: space-between;
+}
+
+.deleteUser button {
+  cursor: pointer;
+  width: 45%;
+  border: none;
+  border-radius: 2rem;
+  color: #ffff;
+  height: 5vh;
+}
+
+.deleteUser button:first-child {
+  background-color: #dc2626;
+}
+
+.deleteUser button:last-child {
+  background-color: #2563eb;
+}
+
+.loadingComponent {
+  margin-top: 25vh;
+  display: flex;
+  justify-content: center;
+  justify-self: center;
+  align-self: center;
+}
