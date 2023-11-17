@@ -125,3 +125,9 @@
   justify-self: center;
   align-self: center;
 }
+
+/* vendor page */
+
+.vendorPage {
+  background-color: red;
+}

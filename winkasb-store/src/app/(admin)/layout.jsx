@@ -1,5 +1,6 @@
 "use client";
 import { useState } from "react";
+import Header from "../(user)/header";
 import { Inter } from "next/font/google";
 import "../global.css";
 import { QueryClient, QueryClientProvider } from "@tanstack/react-query";
@@ -12,6 +13,7 @@ function RootLayout({ children }) {
   return (
     <html lang="en">
       <body className={inter.className} suppressHydrationWarning>
+        <Header />
         <CookiesProvider defaultSetOptions={{ path: "/" }}>
           <QueryClientProvider client={queryClient}>
             {children}
