@@ -3,7 +3,6 @@ import styles from "../../(admin)/admin.module.css";
 import { toast, Toaster } from "react-hot-toast";
 import http from "@/app/axios-instances";
 import { useCookies } from "react-cookie";
-import { MutatingDots } from "react-loader-spinner";
 import { Fragment } from "react";
 
 function DeleteUser({

@@ -42,6 +42,13 @@ router.put(
   ProductController.editProduct
 );
 
+router.get(
+  "/myproducts/:id",
+  validateId(),
+  validationMapper,
+  ProductController.getVendorProducts
+);
+
 module.exports = {
   productRouter: router,
 };

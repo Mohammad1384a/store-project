@@ -10,7 +10,6 @@ function randomNumber() {
 function generateToken(payload) {
   return jwt.sign({ payload }, process.env.SECRET_KEY, {
     algorithm: "HS512",
-    // expiresIn: "7d",
     expiresIn: "7d",
   });
 }

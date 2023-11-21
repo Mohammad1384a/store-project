@@ -129,5 +129,88 @@
 /* vendor page */
 
 .vendorPage {
-  background-color: red;
+  width: 90%;
+  margin: 5vh auto 0 auto;
+}
+
+.vendorPage table {
+  position: relative;
+  margin: 0 auto;
+  font-size: larger;
+  width: 70%;
+}
+
+.vendorPage table th {
+  padding: 1vh 0;
+}
+
+.productImage {
+  padding: 1vh 0;
+}
+
+.vendorPage table,
+.vendorPage td,
+.vendorPage th,
+.vendorPage tr {
+  border: 2px solid #64748b;
+}
+
+.vendorPage table td {
+  text-align: center;
+}
+
+.deleteProduct {
+  position: absolute;
+  background-color: rgba(178, 178, 178, 60%);
+  width: 100%;
+  height: 100vh;
+  z-index: 3;
+  top: 0;
+  left: 0;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+}
+
+.deleteProduct section {
+  background-color: #ffffff;
+  width: 35%;
+  display: flex;
+  flex-direction: column;
+  justify-content: space-around;
+  border-radius: 2rem;
+  height: 32%;
+  align-items: center;
+}
+
+.deleteProduct section div {
+  display: flex;
+  font-size: larger;
+  align-items: center;
+  justify-content: space-between;
+}
+
+.deleteProduct section div:first-child {
+  width: 80%;
+}
+
+.deleteProduct section div:last-child {
+  width: 50%;
+}
+
+.deleteProduct button {
+  width: 5.5vw;
+  height: 4.2vh;
+  border: none;
+  border-radius: 1.5rem;
+  cursor: pointer;
+  color: #ffffff;
+}
+
+.deleteProduct button:first-child {
+  background-color: #dc2626;
+}
+
+.deleteProduct button:last-child {
+  background-color: #2563eb;
 }

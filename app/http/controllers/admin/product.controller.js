@@ -1,6 +1,8 @@
 const Controller = require("../controller");
+const { userModel } = require("../../../models/user.model");
 const { productModel } = require("../../../models/product.model");
 const createError = require("http-errors");
+const { ObjectId } = require("mongodb");
 
 class ProductController extends Controller {
   async addProduct(req, res, next) {
@@ -167,6 +169,16 @@ class ProductController extends Controller {
     } catch (error) {
       next(createError.InternalServerError(error?.message ?? error));
     }
+  }
+  async getVendorProducts(req, res, next) {
+    const { id: _id } = req.params;
+    const products = await productModel.aggregate([
+      { $match: { vendor: new ObjectId(_id) } },
+    ]);
+    return res.status(200).json({
+      status: 200,
+      products: products || [],
+    });
   }
 }
 

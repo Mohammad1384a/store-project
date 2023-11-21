@@ -1,48 +1,61 @@
 "use client";
+import DeleteProduct from "@/app/components/vendor/delete-product";
 import http from "@/app/axios-instances";
 import styles from "../admin.module.css";
 import { Fragment, useEffect, useState } from "react";
 import { toast, Toaster } from "react-hot-toast";
+import ProductsList from "../../components/vendor/products-list";
 import { useCookies } from "react-cookie";
+import { MutatingDots } from "react-loader-spinner";
+import { useMutation } from "@tanstack/react-query";
 
 function VendorPage() {
-  const [userInfo, setUserInfo] = useState(false);
+  const [products, setProducts] = useState(false);
   const [isUserLoggedIn] = useCookies(["user"]);
 
-  async function fetchUserInfo() {
+  async function fetchUserProducts() {
     try {
-      const { data } = await http.get(`user/${isUserLoggedIn?.user?._id}`, {
-        headers: { Authorization: "Bearer " + isUserLoggedIn?.user?.token },
-      });
+      const { data } = await http.get(
+        `admin/product/myproducts/${isUserLoggedIn?.user?._id}`,
+        {
+          headers: { Authorization: "Bearer " + isUserLoggedIn?.user?.token },
+        }
+      );
       return (
-        data?.status === 200 &&
-        data?.user &&
-        setUserInfo({
-          username: data.user.username,
-          products: data.user.products,
-        })
+        data?.status === 200 && data?.products && setProducts(data?.products)
       );
     } catch (error) {
       toast.error(error?.response?.data?.message ?? error?.message ?? error);
     }
   }
 
+  const { mutateAsync, isLoading } = useMutation({
+    mutationFn: fetchUserProducts,
+  });
+
   useEffect(() => {
-    if (!userInfo) {
-      fetchUserInfo();
+    if (!products) {
+      mutateAsync();
     }
-  }, [userInfo]);
+  }, [products]);
 
   return (
     <Fragment>
       <Toaster />
-      {userInfo && (
-        <div className={styles.vendorPage}>
-          <section>
-            <h3>{userInfo?.username} Products</h3>
-          </section>
-        </div>
-      )}
+      <div className={styles.vendorPage}>
+        <h3>My Products List</h3>
+        {isLoading && (
+          <MutatingDots
+            color="#81858b"
+            secondaryColor="#81858b"
+            radius="12.5"
+            ariaLabel="mutating-dots-loading"
+            wrapperClass={styles.loadingComponent}
+            visible={true}
+          />
+        )}
+        {products && <ProductsList products={products} />}
+      </div>
     </Fragment>
   );
 }
