@@ -214,3 +214,20 @@
 .deleteProduct button:last-child {
   background-color: #2563eb;
 }
+
+/* add product section */
+
+.addProduct {
+  width: 90%;
+  margin: 0 auto;
+}
+
+.addProduct input::-webkit-outer-spin-button,
+.addProduct input::-webkit-inner-spin-button {
+  -webkit-appearance: none;
+  margin: 0;
+}
+
+.addProduct input[type="number"] {
+  -moz-appearance: textfield;
+}

@@ -1,5 +1,4 @@
 "use client";
-import DeleteProduct from "@/app/components/vendor/delete-product";
 import http from "@/app/axios-instances";
 import styles from "../admin.module.css";
 import { Fragment, useEffect, useState } from "react";
@@ -8,10 +7,14 @@ import ProductsList from "../../components/vendor/products-list";
 import { useCookies } from "react-cookie";
 import { MutatingDots } from "react-loader-spinner";
 import { useMutation } from "@tanstack/react-query";
+import Link from "next/link";
+import AddProduct from "../../components/vendor/add-product";
 
 function VendorPage() {
   const [products, setProducts] = useState(false);
   const [isUserLoggedIn] = useCookies(["user"]);
+  // true means adding product currently and false means product list
+  const [addingProduct, setPageStatus] = useState(true);
 
   async function fetchUserProducts() {
     try {
@@ -42,20 +45,25 @@ function VendorPage() {
   return (
     <Fragment>
       <Toaster />
-      <div className={styles.vendorPage}>
-        <h3>My Products List</h3>
-        {isLoading && (
-          <MutatingDots
-            color="#81858b"
-            secondaryColor="#81858b"
-            radius="12.5"
-            ariaLabel="mutating-dots-loading"
-            wrapperClass={styles.loadingComponent}
-            visible={true}
-          />
-        )}
-        {products && <ProductsList products={products} />}
-      </div>
+      {addingProduct ? (
+        <AddProduct />
+      ) : (
+        <div className={styles.vendorPage}>
+          <h3>My Products List</h3>
+          <Link href="/vendor/add">add</Link>
+          {isLoading && (
+            <MutatingDots
+              color="#81858b"
+              secondaryColor="#81858b"
+              radius="12.5"
+              ariaLabel="mutating-dots-loading"
+              wrapperClass={styles.loadingComponent}
+              visible={true}
+            />
+          )}
+          {products && <ProductsList products={products} />}
+        </div>
+      )}
     </Fragment>
   );
 }

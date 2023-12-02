@@ -18,19 +18,16 @@ const Schema = new mongoose.Schema({
   price: { type: Number, default: 0 },
   discount: { type: Number, default: 0 },
   quentity: { type: Number, default: 0 },
-  type: { type: String, required: true }, // virtual,physical
-  format: { type: String },
   vendor: { type: mongoose.Types.ObjectId, ref: "user", required: true },
   features: {
     type: Object,
     default: {
-      length: 0,
-      height: 0,
-      width: 0,
-      weight: 0,
-      colors: [],
-      model: [],
-      made_in: "",
+      length: { type: Number, default: 0 },
+      height: { type: Number, default: 0 },
+      width: { type: Number, default: 0 },
+      weight: { type: Number, default: 0 },
+      colors: { type: [String], default: [] },
+      model: { type: String, default: "" },
     },
   },
 });

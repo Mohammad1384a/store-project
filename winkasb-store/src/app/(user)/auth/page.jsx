@@ -1,13 +1,12 @@
 "use client";
 import LoginPage from "../../components/login";
 import CheckOTP from "../../components/check-otp";
-import { Fragment, useEffect, useMemo, useState } from "react";
+import { Fragment, useState } from "react";
 import toast, { Toaster } from "react-hot-toast";
 import http from "@/app/axios-instances";
 import { useMutation } from "@tanstack/react-query";
 import { useRouter } from "next/navigation";
 import { useCookies } from "react-cookie";
-import { decode } from "jsonwebtoken";
 
 function AuthPage() {
   const [phone, setPhone] = useState("");

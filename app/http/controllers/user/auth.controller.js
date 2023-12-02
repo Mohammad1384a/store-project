@@ -91,6 +91,13 @@ class AuthController extends Controller {
           createError.InternalServerError("generating refresh token failed")
         );
       }
+      const updateUserToken = await userModel.updateOne(
+        { phone },
+        { $set: { token: newToken } }
+      );
+      if (!updateUserToken.modifiedCount) {
+        return next(createError.InternalServerError("updating token failed"));
+      }
       return res.status(200).json({
         status: 200,
         token: newToken,
