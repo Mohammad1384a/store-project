@@ -50,7 +50,6 @@ function VendorPage() {
       ) : (
         <div className={styles.vendorPage}>
           <h3>My Products List</h3>
-          <Link href="/vendor/add">add</Link>
           {isLoading && (
             <MutatingDots
               color="#81858b"

@@ -15,10 +15,8 @@ function RootLayout({ children }) {
       <body className={inter.className} suppressHydrationWarning>
         <CookiesProvider defaultSetOptions={{ path: "/" }}>
           <QueryClientProvider client={queryClient}>
-            <div>
-              <Header />
-              {children}
-            </div>
+            <Header />
+            {children}
           </QueryClientProvider>
         </CookiesProvider>
       </body>

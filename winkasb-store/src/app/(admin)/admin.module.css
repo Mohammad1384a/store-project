@@ -218,8 +218,66 @@
 /* add product section */
 
 .addProduct {
+  height: 80vh;
+  overflow: scroll;
   width: 90%;
   margin: 0 auto;
+}
+
+.addProduct ul {
+  margin: 0 auto;
+  list-style-type: "#";
+  width: 70%;
+  display: grid;
+  justify-content: space-around;
+  grid-template-columns: 40% 40%;
+  grid-template-rows: 40% 40%;
+}
+
+.addProduct li {
+  padding: 1vh 0;
+}
+
+.addProduct button {
+  border-radius: 1vh;
+  cursor: pointer;
+  font-size: medium;
+  background-color: #2563eb;
+  color: #ffff;
+  margin: 0 auto;
+  border: none;
+}
+
+.tagsPart {
+  display: flex;
+  justify-content: space-between !important;
+  height: 15% !important;
+  flex-direction: column;
+}
+
+.tagsPart button {
+  width: 40%;
+  padding: 0.7vh 0;
+}
+
+/* body description part */
+
+.addProduct > section > div:nth-child(3) button {
+  width: 80%;
+  padding: 1.5vh 0;
+}
+
+.addProduct > section > div:nth-child(3) > span {
+  flex-direction: column;
+  height: 70%;
+}
+
+.addProduct input,
+.addProduct textarea {
+  border: none;
+  border-radius: 1vh;
+  font-size: medium;
+  padding: 1vh;
 }
 
 .addProduct input::-webkit-outer-spin-button,
@@ -230,4 +288,47 @@
 
 .addProduct input[type="number"] {
   -moz-appearance: textfield;
+}
+
+.addProduct > section {
+  display: flex;
+  height: 100%;
+  background-color: #d7d7d787;
+  border-radius: 2rem;
+  justify-content: space-between;
+}
+
+.addProduct > section > div {
+  display: flex;
+  flex-direction: column;
+  width: 30%;
+  height: 100%;
+  justify-content: space-around;
+}
+
+.addProduct span {
+  height: 6vh;
+  width: 100%;
+  display: flex;
+  align-items: center;
+  justify-content: space-around;
+}
+
+.selectParent div {
+  background-color: #ffff;
+  height: 100%;
+  width: 60%;
+  display: flex;
+  justify-content: center;
+  border-radius: 1vh;
+}
+
+.selectParent select {
+  border: none;
+  border-radius: 1vh;
+  background-color: #ffff;
+  font-size: medium;
+  height: 100%;
+  width: 80%;
+  display: flex;
 }
