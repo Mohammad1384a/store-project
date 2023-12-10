@@ -5,23 +5,24 @@ function productValidator() {
   return [
     body("title")
       .isString()
-      .isLength({ min: 15, max: 35 })
-      .withMessage("title must contain 15-35 characters"),
+      .isLength({ min: 10, max: 50 })
+      .withMessage("title must contain 10-35 characters"),
+    body("vendor").isMongoId().withMessage("invalid vendor mongoid"),
     body("brief_text")
       .isString()
       .isLength({ min: 20, max: 150 })
       .withMessage("brief_text must contain 20-150 characters"),
-    body("body")
+    body("description")
       .isString()
-      .isLength({ min: 50, max: 80 })
-      .withMessage("you should introduce your product with 50-80 characters"),
+      .isLength({ min: 50, max: 1200 })
+      .withMessage("you should introduce your product with 50-1200 characters"),
     body("tags")
       .optional()
       .isArray({ min: 1, max: 5 })
       .withMessage("you should choose 1-5 tags"),
-    body("categories")
-      .isArray({ min: 1, max: 5 })
-      .withMessage("you must choose 1-5 categories for your product"),
+    body("category")
+      .isString()
+      .withMessage("you must choose a category for your product"),
     body("price")
       .optional()
       .isDecimal()
@@ -34,17 +35,27 @@ function productValidator() {
       .optional()
       .isDecimal()
       .withMessage("quantity should be a number"),
-    body("type").custom((value) => {
-      if (value === "physical" || value === "virtual") {
-        return value;
-      } else {
-        throw new Error("type must physical or virtual");
-      }
-    }),
-    body("features")
+    body("width")
       .optional()
-      .isObject()
-      .withMessage("features should an object"),
+      .isDecimal()
+      .withMessage("width should be a number"),
+    body("height")
+      .optional()
+      .isDecimal()
+      .withMessage("height should be a number"),
+    body("length")
+      .optional()
+      .isDecimal()
+      .withMessage("length should be a number"),
+    body("weight")
+      .optional()
+      .isDecimal()
+      .withMessage("weight should be a number"),
+    body("model")
+      .optional()
+      .isString()
+      .isLength({ min: 5, max: 50 })
+      .withMessage("model should be between 5-50 characters"),
   ];
 }
 

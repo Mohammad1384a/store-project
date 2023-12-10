@@ -6,19 +6,20 @@ import { MutatingDots } from "react-loader-spinner";
 import { toast, Toaster } from "react-hot-toast";
 import http from "@/app/axios-instances";
 
-function DeleteProduct({ deleteProduct, setDeleteProduct, setProductList }) {
+function DeleteProduct({ productToDelete, setDeleteProduct, setProductList }) {
   const [isUserLoggedIn] = useCookies(["user"]);
 
   async function deleteProductById() {
     try {
       const token = isUserLoggedIn?.user?.token;
-      const { data } = await http.delete(`admin/product/${deleteProduct}`, {
+      const { data } = await http.delete(`admin/product/${productToDelete}`, {
         headers: { Authorization: "Bearer " + token },
       });
       data.status === 200 &&
         data?.remove &&
-        setProductList((prev) => prev.filter((e) => e._id !== deleteProduct));
-      return toast.success("Product Deleted Successfully");
+        setProductList((prev) => prev.filter((e) => e._id !== productToDelete));
+      toast.success("Product Deleted Successfully");
+      return setDeleteProduct(false);
     } catch (error) {
       toast.error(error?.response?.data?.message ?? error?.message ?? error);
     }
@@ -29,7 +30,7 @@ function DeleteProduct({ deleteProduct, setDeleteProduct, setProductList }) {
   });
 
   return (
-    <div className={deleteProduct ? styles.deleteProduct : styles.none}>
+    <div className={productToDelete ? styles.deleteProduct : styles.none}>
       <Toaster />
       {isLoading ? (
         <MutatingDots

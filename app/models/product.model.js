@@ -4,11 +4,11 @@ const { CommentSchema } = require("./public.model");
 const Schema = new mongoose.Schema({
   title: { type: String, required: true },
   brief_text: { type: String, required: true },
-  body: { type: String, required: true },
+  description: { type: String, required: true },
   images: { type: [String], required: true },
   tags: { type: [String], default: [] },
-  categories: {
-    type: [mongoose.Types.ObjectId],
+  category: {
+    type: [String],
     ref: "categories",
     required: true,
   },
@@ -19,17 +19,12 @@ const Schema = new mongoose.Schema({
   discount: { type: Number, default: 0 },
   quentity: { type: Number, default: 0 },
   vendor: { type: mongoose.Types.ObjectId, ref: "user", required: true },
-  features: {
-    type: Object,
-    default: {
-      length: { type: Number, default: 0 },
-      height: { type: Number, default: 0 },
-      width: { type: Number, default: 0 },
-      weight: { type: Number, default: 0 },
-      colors: { type: [String], default: [] },
-      model: { type: String, default: "" },
-    },
-  },
+  length: { type: Number, default: 0 },
+  height: { type: Number, default: 0 },
+  width: { type: Number, default: 0 },
+  weight: { type: Number, default: 0 },
+  colors: { type: [String], default: [] },
+  model: { type: String, default: "" },
 });
 
 const model = mongoose.model("product", Schema);

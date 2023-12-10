@@ -32,7 +32,7 @@ const storage = multer.diskStorage({
     cb(null, filePath);
   },
   filename: (req, file, cb) => {
-    const ext = path.extname(file.originalname);
+    const ext = path.extname(file.originalname).toLowerCase();
     const type = file.fieldname;
     const validTypes =
       type === "image" || type === "images"

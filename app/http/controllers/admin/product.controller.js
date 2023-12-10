@@ -1,5 +1,4 @@
 const Controller = require("../controller");
-const { userModel } = require("../../../models/user.model");
 const { productModel } = require("../../../models/product.model");
 const createError = require("http-errors");
 const { ObjectId } = require("mongodb");
@@ -8,10 +7,19 @@ class ProductController extends Controller {
   async addProduct(req, res, next) {
     try {
       const data = req.body;
-      if (req.files.length === 0 || !req.file) {
+      if (2 > req.files?.length > 5) {
         return next(
           createError.BadRequest("you must choose 2-5 images for your product")
         );
+      }
+      const colorsClone = [];
+      colorsClone.push(data?.colors);
+      if (
+        !Array.isArray(colorsClone) ||
+        colorsClone.length > 3 ||
+        colorsClone?.length === 0
+      ) {
+        return next(createError.BadRequest("you should choose 1-3 colors"));
       }
       const protocol = req.protocol;
       const host = req.get("host");
@@ -27,17 +35,21 @@ class ProductController extends Controller {
       const validItems = [
         "title",
         "brief_text",
-        "body",
+        "description",
         "images",
-        "categories",
+        "category",
         "price",
-        "type",
-        "teacher",
+        "length",
+        "width",
+        "height",
+        "weight",
+        "colors",
+        "model",
+        "vendor",
         "features",
         "quentity",
         "discount",
         "tags",
-        "comments",
       ];
       Object.keys(data).forEach((key) => {
         if (!validItems.includes(key)) {

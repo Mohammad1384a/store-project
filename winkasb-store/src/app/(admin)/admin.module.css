@@ -133,6 +133,23 @@
   margin: 5vh auto 0 auto;
 }
 
+.vendorPage > span {
+  display: flex;
+  height: 10vh;
+  justify-content: space-around;
+}
+
+.vendorPage > span > h3 {
+  width: 40%;
+  text-align: center;
+  margin: 0;
+}
+
+.vendorPage > span > h3:last-child {
+  cursor: pointer;
+  color: cornflowerblue;
+}
+
 .vendorPage table {
   position: relative;
   margin: 0 auto;
@@ -163,7 +180,7 @@
   position: absolute;
   background-color: rgba(178, 178, 178, 60%);
   width: 100%;
-  height: 100vh;
+  height: 100%;
   z-index: 3;
   top: 0;
   left: 0;
@@ -226,16 +243,27 @@
 
 .addProduct ul {
   margin: 0 auto;
-  list-style-type: "#";
   width: 70%;
+  height: 100%;
+  list-style-type: none;
   display: grid;
   justify-content: space-around;
+  align-content: space-around;
   grid-template-columns: 40% 40%;
   grid-template-rows: 40% 40%;
 }
 
+.selectedPart {
+  height: 15% !important;
+}
+
 .addProduct li {
   padding: 1vh 0;
+  background-color: #ffff;
+  display: flex;
+  justify-content: space-around;
+  border-radius: 2rem;
+  cursor: pointer;
 }
 
 .addProduct button {
