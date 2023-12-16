@@ -1,5 +1,6 @@
 "use client";
 import { useEffect, useState } from "react";
+import { fetchCategories } from "../fetch-categories";
 import styles from "../../(admin)/admin.module.css";
 import http from "@/app/axios-instances";
 import { toast, Toaster } from "react-hot-toast";
@@ -38,30 +39,18 @@ function AddProduct({ setPageStatus, setProducts }) {
     { value: "colorful", label: "colorful" },
   ]);
 
-  async function fetchCategories() {
-    try {
-      const { data } = await http.get("/admin/category/all", {
-        headers: { Authorization: "Bearer " + isUserLoggedIn?.user?.token },
-      });
-      const titles =
-        data?.status === 200 &&
-        data?.categories &&
-        data.categories.map((c) => {
-          return { label: c.title, value: c.title };
-        });
-      return setCategories(titles);
-    } catch (error) {
-      toast.error(error?.response?.data?.message ?? error?.message ?? error);
-    }
-  }
-
-  const { mutateAsync, isLoading } = useMutation({
+  const { mutateAsync, isLoading, data, error } = useMutation({
     mutationFn: fetchCategories,
   });
 
   useEffect(() => {
+    console.log(data);
+    data ? setCategories(data) : error && toast.error(error);
+  }, [data, error]);
+
+  useEffect(() => {
     if (!categories) {
-      mutateAsync();
+      mutateAsync(isUserLoggedIn?.user?.token);
     }
   }, [categories]);
 

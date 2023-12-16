@@ -4,7 +4,7 @@ const { CommentSchema } = require("./public.model");
 const Expisodes = new mongoose.Schema({
   title: { type: String, required: true },
   body: { type: String, required: true },
-  value: { type: String, default: "unlocked" }, // locked,unlocked
+  value: { type: String, default: "locked" }, // locked,unlocked
   time: { type: String, required: true },
   videoPath: { type: String, required: true },
 });
@@ -22,7 +22,7 @@ const Schema = new mongoose.Schema({
   image: { type: String, required: true },
   tags: { type: [String], default: [] },
   categories: {
-    type: [mongoose.Types.ObjectId],
+    type: [String],
     ref: "categories",
     required: true,
   },
@@ -31,7 +31,7 @@ const Schema = new mongoose.Schema({
   bookmarks: { type: [mongoose.Types.ObjectId], default: [] },
   price: { type: Number, default: 0 },
   discount: { type: Number, default: 0 },
-  status: { type: String, default: "notStarted" }, // notStarted, ongoing, done
+  status: { type: String, default: "notStarted" }, // notStarted, onGoing, done
   value: { type: String, default: "free" }, // free, monetary, premium
   total_time: { type: String, default: "00:00:00" },
   teacher: { type: mongoose.Types.ObjectId, ref: "users", required: true },
