@@ -14,9 +14,9 @@ router.use("/chapter", chapterRouter);
 
 router.post(
   "/add",
+  uploadFile.single("image"),
   courseValidator(),
   validationMapper,
-  uploadFile.single("image"),
   CourseController.addCourse
 );
 

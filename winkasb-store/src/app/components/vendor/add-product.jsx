@@ -83,7 +83,6 @@ function AddProduct({ setPageStatus, setProducts }) {
       const { data } = await http.post("admin/product/add", formData, {
         headers: { Authorization: "Bearer " + isUserLoggedIn?.user?.token },
       });
-      console.log(data);
       if (data?.status === 200 && data?.product) {
         setProducts(false);
         return setPageStatus(false);

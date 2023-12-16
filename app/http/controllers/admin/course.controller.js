@@ -82,7 +82,7 @@ class CourseController extends Controller {
     try {
       if (!req.file) {
         return next(
-          createError.BadRequest("you should at leas choose one image")
+          createError.BadRequest("you should at least choose one image")
         );
       }
       let data = req.body;
@@ -92,7 +92,7 @@ class CourseController extends Controller {
         "description",
         "image",
         "tags",
-        "categories",
+        "category",
         "price",
         "discount",
         "status",

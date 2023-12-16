@@ -5,8 +5,9 @@ import { Toaster, toast } from "react-hot-toast";
 import { useMutation } from "@tanstack/react-query";
 import { MutatingDots } from "react-loader-spinner";
 import { useCookies } from "react-cookie";
+import http from "@/app/axios-instances";
 
-function AddCourse({ inputs, setInputs }) {
+function AddCourse({ inputs, setInputs, setPageStatus }) {
   const [categories, setCategories] = useState(false);
   const [isUserLoggedIn] = useCookies(["user"]);
   const { isLoading, error, mutateAsync, data } = useMutation({
@@ -20,14 +21,43 @@ function AddCourse({ inputs, setInputs }) {
   }, [categories]);
 
   useEffect(() => {
-    console.log(data);
     data ? setCategories(data) : error && toast.error(error);
   }, [data, error]);
+
+  async function addTeacherCourse() {
+    try {
+      const formData = new FormData();
+      Object.keys(inputs).forEach((input) => {
+        if (input === "tag") {
+          return;
+        } else if (input === "tags") {
+          for (let i = 0; i <= inputs.tags?.length; i++) {
+            formData.append(input, inputs.tags[i]);
+          }
+        } else {
+          formData.append(input, inputs[input]);
+        }
+      });
+      const { data } = await http.post("admin/course/add", formData, {
+        headers: { Authorization: "Bearer " + isUserLoggedIn?.user?.token },
+      });
+      data?.status === 200 &&
+        data?.course &&
+        toast.success("Course Created Successfully");
+      return setPageStatus("list");
+    } catch (error) {
+      toast.error(error?.response?.data?.message ?? error?.message ?? error);
+    }
+  }
+
+  const { isLoading: addLoading, mutateAsync: addAsync } = useMutation({
+    mutationFn: addTeacherCourse,
+  });
 
   return (
     <Fragment>
       <Toaster />
-      {isLoading ? (
+      {isLoading || addLoading ? (
         <MutatingDots
           color="#81858b"
           secondaryColor="#81858b"
@@ -62,7 +92,14 @@ function AddCourse({ inputs, setInputs }) {
                   }
                 />
               </span>
-              <input type="file" name="image" multiple={false} />
+              <input
+                type="file"
+                name="image"
+                multiple={false}
+                onChange={(e) =>
+                  setInputs({ ...inputs, image: e.target.files[0] })
+                }
+              />
               <span>
                 <label htmlFor="status">Status: </label>
                 <div>
@@ -198,7 +235,9 @@ function AddCourse({ inputs, setInputs }) {
                   }
                 ></textarea>
               </aside>
-              <button type="submit">Add Course</button>
+              <button type="submit" onClick={() => addAsync()}>
+                Add Course
+              </button>
             </section>
           </div>
         )

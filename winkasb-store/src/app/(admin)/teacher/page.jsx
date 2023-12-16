@@ -12,7 +12,7 @@ function TeacherPage() {
     title: "",
     brief_text: "",
     description: "",
-    image: "",
+    image: {},
     // all tags
     tags: [],
     // input value
@@ -26,14 +26,16 @@ function TeacherPage() {
     value: "",
     teacher: isUserLoggedIn?.user?._id || "",
   });
-  useEffect(() => {
-    console.log(courseInputs);
-  }, [courseInputs]);
+  useEffect(() => {}, [courseInputs]);
   return (
     <Fragment>
       <Toaster />
       {pageStatus === "course" ? (
-        <AddCourse inputs={courseInputs} setInputs={setCourseInputs} />
+        <AddCourse
+          inputs={courseInputs}
+          setInputs={setCourseInputs}
+          setPageStatus={setPageStatus}
+        />
       ) : (
         <h3>something</h3>
       )}
