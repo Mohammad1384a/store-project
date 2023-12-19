@@ -20,6 +20,13 @@ router.post(
   CourseController.addCourse
 );
 
+router.get(
+  "/myCourses/:id",
+  validateId(),
+  validationMapper,
+  CourseController.getMyCourses
+);
+
 router.get("/all", CourseController.getCourseList);
 
 router.get(

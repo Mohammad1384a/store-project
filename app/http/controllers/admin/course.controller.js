@@ -230,6 +230,21 @@ class CourseController extends Controller {
       next(createError.InternalServerError(error.message ?? error));
     }
   }
+  async getMyCourses(req, res, next) {
+    try {
+      const { id: _id } = req.params;
+      const courses = await courseModel.find({ teacher: new ObjectId(_id) });
+      if (!courses) {
+        return createError.InternalServerError("could not find courses");
+      }
+      return res.status(200).json({
+        status: 200,
+        courses,
+      });
+    } catch (error) {
+      next(createError.InternalServerError(error.message ?? error));
+    }
+  }
 }
 
 module.exports = new CourseController();
